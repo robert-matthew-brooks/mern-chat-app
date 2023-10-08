@@ -1,0 +1,19 @@
+:root {
+  --text-dark: #000000;
+  --text-light: #ffffff;
+
+  --main-bg-colour: #c0c0c0;
+
+  --app-bg-colour: #f0f0f0;
+
+  --link-colour: #0000ff;
+  --link-hover-colour: #00008b;
+
+  --form-bg-colour: #ffffff;
+  --form-border-colour: #808080;
+  --form-btn-bg-colour: #1f388b;
+  --form-btn-hover-bg-colour: #334b9c;
+
+  --error-colour: #ff0000;
+  --error-bg-colour: #ffc0c0;
+}

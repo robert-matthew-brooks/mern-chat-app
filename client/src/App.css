@@ -1,0 +1,13 @@
+#App {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#App__inner-wrapper {
+  width: 90%;
+  height: 90%;
+  background-color: var(--app-bg-colour);
+  border-radius: var(--global-border-radius);
+}

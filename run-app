@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+gnome-terminal --tab -- bash -c 'cd ./api; npm run listen'
+gnome-terminal --tab -- bash -c 'cd ./client; npm run dev'
+
+google-chrome http://localhost:5173
+clear
