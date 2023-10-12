@@ -1,4 +1,4 @@
-const { db } = require('../db/connection');
+const { User } = require('../db/connection');
 const dotenv = require('dotenv');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -7,18 +7,16 @@ dotenv.config();
 const jwtSecret = process.env.JWT_SECRET;
 const bcryptSalt = bcrypt.genSaltSync(10);
 
-const UserSchema = new db.Schema(
-  {
-    username: { type: String, unique: true },
-    password: String,
-  },
-  { timestamps: true }
-);
-
-const User = db.model('User', UserSchema);
-
 const makeToken = (user) => {
-  return jwt.sign({ id: user._id, username: user.username }, jwtSecret, {});
+  return jwt.sign(
+    {
+      id: user._id,
+      username: user.username,
+      contacts: user.contacts,
+    },
+    jwtSecret,
+    {}
+  );
 };
 
 async function getProfile(token) {
@@ -29,17 +27,30 @@ async function getProfile(token) {
 async function register(username, password) {
   const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
   const createdUser = await User.create({ username, password: hashedPassword });
+  createdUser.contacts = [];
+
   return {
     registeredUser: {
       id: createdUser._id,
       username: createdUser.username,
+      contacts: createdUser.contacts,
       token: makeToken(createdUser),
     },
   };
 }
 
 async function login(username, password) {
-  const foundUser = await User.findOne({ username });
+  const foundUser = await User.aggregate([
+    {
+      $unwind: '$contactIds',
+    },
+    {
+      $match: { username },
+    },
+    { $group: { contacts: { _id: 1, $push: '$contactIds' } } },
+  ]);
+  // foundUser.contacts = [{ id: '1', username: '11' }];
+  console.log(foundUser);
 
   if (foundUser) {
     const isPassOk = bcrypt.compareSync(password, foundUser.password);
@@ -48,6 +59,7 @@ async function login(username, password) {
         foundUser: {
           id: foundUser._id,
           username: foundUser.username,
+          contacts: foundUser.contacts,
           token: makeToken(foundUser),
         },
       };
@@ -59,4 +71,12 @@ async function login(username, password) {
   }
 }
 
-module.exports = { getProfile, register, login };
+async function addContact(userId, contactId) {
+  const response = await User.updateOne(
+    { _id: userId },
+    { $addToSet: { contactIds: contactId } }
+  );
+  return { response };
+}
+
+module.exports = { getProfile, register, login, addContact };

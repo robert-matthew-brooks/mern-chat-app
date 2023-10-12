@@ -4,8 +4,19 @@ const dotenv = require('dotenv');
 dotenv.config();
 const mongoUrl = process.env.MONGO_URL;
 
-function dbConnect() {
-  db.connect(mongoUrl);
+async function dbConnect() {
+  await db.connect(mongoUrl);
 }
 
-module.exports = { db, dbConnect };
+const UserSchema = new db.Schema(
+  {
+    username: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    contactIds: { type: [{ type: String }], default: [] },
+  },
+  { timestamps: true }
+);
+
+const User = db.model('User', UserSchema);
+
+module.exports = { db, dbConnect, User };

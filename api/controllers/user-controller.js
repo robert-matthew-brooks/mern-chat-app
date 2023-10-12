@@ -22,11 +22,12 @@ async function register(req, res, next) {
     const { registeredUser } = await userModel.register(username, password);
 
     res
+      .status(201)
       .cookie('token', registeredUser.token, {
         sameSite: 'none',
         secure: true,
       })
-      .status(201)
+
       .send({ registered_user: registeredUser });
   } catch (err) {
     next(err);
@@ -40,15 +41,34 @@ async function login(req, res, next) {
     const { foundUser } = await userModel.login(username, password);
 
     res
+      .status(201)
       .cookie('token', foundUser.token, {
         sameSite: 'none',
         secure: true,
       })
-      .status(201)
       .send({ found_user: foundUser });
   } catch (err) {
     next(err);
   }
 }
 
-module.exports = { getProfile, register, login };
+async function logout(_req, res, next) {
+  try {
+    res.status(204).cookie('token', {}).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function addContact(req, res, next) {
+  console.log(req.cookies);
+  const { user_id: userId, contact_id: contactId } = req.body;
+  try {
+    const { response } = await userModel.addContact(userId, contactId);
+    res.status(200).send({ response });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = { getProfile, register, login, logout, addContact };

@@ -1,17 +1,29 @@
 import { useState, useEffect, createContext } from 'react';
-import { getProfileFromToken } from './js/api';
+import * as api from './js/api';
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const [id, setId] = useState(null);
   const [username, setUsername] = useState(null);
+  const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
     (async () => {
-      const userData = await getProfileFromToken();
-      setId(userData.id);
-      setUsername(userData.username);
+      try {
+        const userData = await api.getProfileFromToken();
+        setId(userData.id);
+        setUsername(userData.username);
+        console.log(userData);
+      } catch (err) {
+        if (err?.response?.status === 401) {
+          console.log('401: no cookie token found');
+        } else {
+          console.error(err);
+
+          throw err;
+        }
+      }
     })();
   }, []);
 

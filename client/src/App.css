@@ -8,6 +8,7 @@
 #App__inner-wrapper {
   width: 90%;
   height: 90%;
+  overflow: hidden;
   background-color: var(--app-bg-colour);
   border-radius: var(--global-border-radius);
 }

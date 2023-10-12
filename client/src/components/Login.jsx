@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { UserContext } from '../UserContext';
-import { register, login } from '../js/api';
+import * as api from '../js/api';
 import './Login.css';
 
 export default function Login() {
@@ -52,7 +52,7 @@ export default function Login() {
   async function handleRegister() {
     if (validateUsername() && validatePassword()) {
       try {
-        const registeredUser = await register({ username, password });
+        const registeredUser = await api.register({ username, password });
         setLoggedInUsername(registeredUser.username);
         setId(registeredUser.id);
       } catch (err) {
@@ -69,7 +69,7 @@ export default function Login() {
   async function handleLogin() {
     if (validateUsername() && validatePassword()) {
       try {
-        const foundUser = await login({ username, password });
+        const foundUser = await api.login({ username, password });
         setLoggedInUsername(foundUser.username);
         setId(foundUser.id);
       } catch (err) {

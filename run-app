@@ -1,7 +1,6 @@
 #!/usr/bin/bash
 
-gnome-terminal --tab -- bash -c 'cd ./api; npm run listen'
-gnome-terminal --tab -- bash -c 'cd ./client; npm run dev'
+gnome-terminal --tab -- bash -c 'cd ./api; npx kill-port 6789; npx nodemon listen.js; bash'
+gnome-terminal --tab -- bash -c 'cd ./client; npx kill-port 5173; npx vite --open; bash'
 
-google-chrome http://localhost:5173
 clear
