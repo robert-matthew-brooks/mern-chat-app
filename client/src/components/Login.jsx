@@ -1,17 +1,22 @@
 import { useState, useContext } from 'react';
 import { UserContext } from '../UserContext';
-import * as api from '../js/api';
+import { register, login } from '../js/api';
 import './Login.css';
 
 export default function Login() {
-  const [username, setUsername] = useState('testbob');
-  const [password, setPassword] = useState('testpass1');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
-  const { setUsername: setLoggedInUsername, setId } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
 
-  function validateUsername() {
-    const usernameInput = document.getElementById('Login__username');
-    usernameInput.classList.remove(...usernameInput.classList);
+  const autofill = () => {
+    setUsername('Bob_test');
+    setPassword('testpass1');
+  };
+
+  const validateUsername = () => {
+    const userBox = document.getElementById('Login__username');
+    userBox.classList.remove(...userBox.classList);
 
     if (!username) {
       setErrorMsg('Username - cannot be blank');
@@ -24,13 +29,13 @@ export default function Login() {
       return true;
     }
 
-    usernameInput.classList.add('Login__input--invalid');
+    userBox.classList.add('Login__input--invalid');
     return false;
-  }
+  };
 
-  function validatePassword() {
-    const passwordInput = document.getElementById('Login__password');
-    passwordInput.classList.remove(...passwordInput.classList);
+  const validatePassword = () => {
+    const passBox = document.getElementById('Login__password');
+    passBox.classList.remove(...passBox.classList);
 
     if (!password) {
       setErrorMsg('Password - cannot be blank');
@@ -45,16 +50,15 @@ export default function Login() {
       return true;
     }
 
-    passwordInput.classList.add('Login__input--invalid');
+    passBox.classList.add('Login__input--invalid');
     return false;
-  }
+  };
 
-  async function handleRegister() {
+  const handleRegister = async () => {
     if (validateUsername() && validatePassword()) {
       try {
-        const registeredUser = await api.register({ username, password });
-        setLoggedInUsername(registeredUser.username);
-        setId(registeredUser.id);
+        const registeredUser = await register(username, password);
+        setUser(registeredUser);
       } catch (err) {
         if (err?.response?.data?.code === '11000') {
           setErrorMsg('Username already exists');
@@ -64,14 +68,13 @@ export default function Login() {
         }
       }
     }
-  }
+  };
 
-  async function handleLogin() {
+  const handleLogin = async () => {
     if (validateUsername() && validatePassword()) {
       try {
-        const foundUser = await api.login({ username, password });
-        setLoggedInUsername(foundUser.username);
-        setId(foundUser.id);
+        const foundUser = await login(username, password);
+        setUser(foundUser);
       } catch (err) {
         if (err?.response?.status === 401) {
           setErrorMsg('Incorrect password');
@@ -83,44 +86,63 @@ export default function Login() {
         }
       }
     }
-  }
+  };
 
   return (
-    <form
-      id="Login"
-      onSubmit={(evt) => {
-        evt.preventDefault();
-      }}
-    >
-      <input
-        id="Login__username"
-        type="text"
-        value={username}
-        placeholder="Username"
-        onChange={(evt) => {
-          setUsername(evt.target.value);
+    <div id="Login">
+      <form
+        id="Login__form"
+        onSubmit={(evt) => {
+          evt.preventDefault();
         }}
-        onBlur={validateUsername}
-      />
-      <input
-        id="Login__password"
-        type="password"
-        value={password}
-        placeholder="Password"
-        onChange={(evt) => {
-          setPassword(evt.target.value);
-        }}
-        onBlur={validatePassword}
-      />
+      >
+        <input
+          id="Login__username"
+          type="text"
+          value={username}
+          placeholder="Username"
+          onChange={(evt) => {
+            setUsername(evt.target.value);
+          }}
+          onBlur={validateUsername}
+        />
+        <input
+          id="Login__password"
+          type="password"
+          value={password}
+          placeholder="Password"
+          onChange={(evt) => {
+            setPassword(evt.target.value);
+          }}
+          onBlur={validatePassword}
+        />
 
-      <div id="Login__btn-wrapper">
-        <button onClick={handleRegister}>Register</button>
-        <button onClick={handleLogin}>Login</button>
-      </div>
+        <div id="Login__btn-wrapper">
+          <button onClick={handleRegister}>Register</button>
+          <button onClick={handleLogin}>Login</button>
+        </div>
 
-      <p id="Login__status" style={{ display: errorMsg ? 'block' : 'none' }}>
-        {errorMsg}
+        <p
+          id="Login__err-status"
+          style={{ display: errorMsg ? 'block' : 'none' }}
+        >
+          {errorMsg}
+        </p>
+      </form>
+
+      <p>
+        You can register a new account
+        <br />
+        or use a demo account:
+        <br />
+        <br />
+        Username: Bob_test
+        <br />
+        Password: testpass1
+        <br />
+        <br />
+        <button onClick={autofill}>Click me to autofill...</button>
       </p>
-    </form>
+    </div>
   );
 }

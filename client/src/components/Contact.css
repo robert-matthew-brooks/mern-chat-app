@@ -1,0 +1,35 @@
+:root {
+  --contact-padding: 1rem;
+  --contact-active-border: 5px;
+}
+
+.Contact {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 1rem;
+  padding: var(--contact-padding);
+  cursor: pointer;
+}
+.Contact:hover {
+  background-color: #f0f0f0;
+}
+
+.Contact--active {
+  background-color: #e0e0e0 !important;
+  border-left: 5px solid green;
+  padding-left: calc(var(--contact-padding) - var(--contact-active-border));
+}
+
+.Contact__avatar {
+  width: 3rem;
+  aspect-ratio: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  font-size: 1.3rem;
+  background-color: #707070;
+  border-radius: 50%;
+}

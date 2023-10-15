@@ -1,0 +1,14 @@
+#Nav {
+  grid-area: nav;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem;
+  background-color: lightgreen;
+}
+
+#Nav__title {
+  margin-right: auto;
+}

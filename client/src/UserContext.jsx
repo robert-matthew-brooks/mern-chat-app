@@ -7,20 +7,29 @@ export function UserContextProvider({ children }) {
   const [id, setId] = useState(null);
   const [username, setUsername] = useState(null);
   const [contacts, setContacts] = useState([]);
+  const [activeContact, setActiveContact] = useState(null);
+
+  function setUser(user) {
+    if (!user) {
+      user = { id: null, username: null, contacts: [] };
+    }
+
+    setId(user.id);
+    setUsername(user.username);
+    setContacts(user.contacts);
+    setActiveContact(null);
+  }
 
   useEffect(() => {
     (async () => {
       try {
         const userData = await api.getProfileFromToken();
-        setId(userData.id);
-        setUsername(userData.username);
-        console.log(userData);
+        setUser(userData);
       } catch (err) {
         if (err?.response?.status === 401) {
           console.log('401: no cookie token found');
         } else {
           console.error(err);
-
           throw err;
         }
       }
@@ -28,7 +37,17 @@ export function UserContextProvider({ children }) {
   }, []);
 
   return (
-    <UserContext.Provider value={{ id, setId, username, setUsername }}>
+    <UserContext.Provider
+      value={{
+        id,
+        username,
+        contacts,
+        activeContact,
+        setUser,
+        setContacts,
+        setActiveContact,
+      }}
+    >
       {children}
     </UserContext.Provider>
   );

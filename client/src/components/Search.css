@@ -1,0 +1,38 @@
+#Search {
+  height: 1.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  background-color: white;
+}
+
+#Search__input {
+  padding: 0.2rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+#Search__results {
+  position: absolute;
+  top: 100%; /* start at bottom of container / search box */
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: white;
+}
+
+.Search__results__user,
+#Search__results__no-results {
+  padding: 0.5rem;
+  font-family: inherit;
+  font-size: 0.8rem;
+}
+.Search__results__user:hover {
+  background-color: #fafafa;
+  cursor: pointer;
+}
+
+#Search__results__no-results {
+  color: grey;
+}

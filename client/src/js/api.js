@@ -10,13 +10,13 @@ export async function getProfileFromToken() {
   return data.user_data;
 }
 
-export async function register(params) {
-  const { data } = await api.post('/user/register', params);
+export async function register(username, password) {
+  const { data } = await api.post('/user/register', { username, password });
   return data.registered_user;
 }
 
-export async function login(params) {
-  const { data } = await api.post('/user/login', params);
+export async function login(username, password) {
+  const { data } = await api.post('/user/login', { username, password });
   return data.found_user;
 }
 
@@ -24,15 +24,24 @@ export async function logout() {
   await api.post('/user/logout');
 }
 
+// used in search bar
+export async function filterUsers(term, limit) {
+  const { data } = await api.get('/users/filter', { params: { term, limit } });
+  return data;
+}
+
 export async function addContact(userId, contactId) {
-  const { data } = await api.patch('/user/contacts', {
+  const { data } = await api.post('/user/contacts', {
     user_id: userId,
     contact_id: contactId,
   });
   return data;
 }
 
-export async function filterUsers(term) {
-  const { data } = await api.get(`/users/filter/${term}`);
+export async function removeContact(userId, contactId) {
+  const { data } = await api.patch('/user/contacts', {
+    user_id: userId,
+    contact_id: contactId,
+  });
   return data;
 }
