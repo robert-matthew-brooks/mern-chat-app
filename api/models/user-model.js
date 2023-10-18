@@ -1,11 +1,11 @@
 const { User } = require('../db/connection');
 const dotenv = require('dotenv');
-const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { hash } = require('../db/encrypt');
 
 dotenv.config();
 const jwtSecret = process.env.JWT_SECRET;
-const bcryptSalt = bcrypt.genSaltSync(10);
 
 const makeToken = (user) => {
   return jwt.sign(
@@ -25,7 +25,7 @@ async function getProfile(token) {
 }
 
 async function register(username, password) {
-  const hashedPassword = bcrypt.hashSync(password, bcryptSalt);
+  const hashedPassword = hash(password);
   const createdUser = await User.create({ username, password: hashedPassword });
   createdUser.contacts = [];
 
@@ -40,17 +40,21 @@ async function register(username, password) {
 }
 
 async function login(username, password) {
-  const foundUser = await User.aggregate([
+  const response = await User.aggregate([
+    { $match: { username } },
     {
-      $unwind: '$contactIds',
+      $lookup: {
+        from: 'users',
+        localField: 'contactIds',
+        foreignField: '_id',
+        pipeline: [{ $project: { _id: 1, username: 1 } }],
+        as: 'contacts',
+      },
     },
-    {
-      $match: { username },
-    },
-    { $group: { contacts: { _id: 1, $push: '$contactIds' } } },
+    { $project: { contactIds: 0 } },
   ]);
-  // foundUser.contacts = [{ id: '1', username: '11' }];
-  console.log(foundUser);
+
+  const foundUser = response[0];
 
   if (foundUser) {
     const isPassOk = bcrypt.compareSync(password, foundUser.password);
@@ -79,4 +83,13 @@ async function addContact(userId, contactId) {
   return { response };
 }
 
-module.exports = { getProfile, register, login, addContact };
+async function removeContact(userId, contactId) {
+  console.log('be', userId, contactId);
+  const response = await User.updateOne(
+    { _id: userId },
+    { $pull: { contactIds: contactId } }
+  );
+  return { response };
+}
+
+module.exports = { getProfile, register, login, addContact, removeContact };

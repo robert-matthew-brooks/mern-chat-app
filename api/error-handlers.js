@@ -11,7 +11,8 @@ function mongoErrorHandler(err, _req, res, next) {
 }
 
 function serverErrorHandler(err, _req, res, _next) {
-  res.status(500).send({ msg: `unhandled internal server error: ${err}` });
+  console.error(err);
+  res.status(500).send({ msg: `${err}` });
 }
 
 module.exports = { customErrorHandler, mongoErrorHandler, serverErrorHandler };

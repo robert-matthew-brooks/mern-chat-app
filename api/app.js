@@ -36,9 +36,11 @@ app.get('/user/profile', userController.getProfile);
 app.post('/user/register', userController.register);
 app.post('/user/login', userController.login);
 app.post('/user/logout', userController.logout);
-app.patch('/user/contacts', userController.addContact);
 
-app.get('/users/filter/:term', usersController.filterUsers);
+app.post('/user/contacts', userController.addContact);
+app.patch('/user/contacts', userController.removeContact);
+
+app.get('/users/filter', usersController.filterUsers);
 
 app.all('*', (_req, res, _next) => {
   res.status(404).send({ msg: 'endpoint not found' });

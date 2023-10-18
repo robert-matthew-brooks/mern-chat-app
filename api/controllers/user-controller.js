@@ -61,8 +61,8 @@ async function logout(_req, res, next) {
 }
 
 async function addContact(req, res, next) {
-  console.log(req.cookies);
   const { user_id: userId, contact_id: contactId } = req.body;
+
   try {
     const { response } = await userModel.addContact(userId, contactId);
     res.status(200).send({ response });
@@ -71,4 +71,23 @@ async function addContact(req, res, next) {
   }
 }
 
-module.exports = { getProfile, register, login, logout, addContact };
+async function removeContact(req, res, next) {
+  const { user_id: userId, contact_id: contactId } = req.body;
+  console.log(req.body);
+
+  try {
+    const { response } = await userModel.removeContact(userId, contactId);
+    res.status(200).send({ response });
+  } catch (err) {
+    next(err);
+  }
+}
+
+module.exports = {
+  getProfile,
+  register,
+  login,
+  logout,
+  addContact,
+  removeContact,
+};
