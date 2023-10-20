@@ -1,10 +1,6 @@
 const ws = require('ws');
 const { getProfile } = require('./models/user-model');
 
-const getClients = (wss) => {
-  return [...wss.clients];
-};
-
 const getUserData = async (req) => {
   const cookies = req.headers.cookie;
   tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
@@ -17,6 +13,21 @@ const getUserData = async (req) => {
   }
 };
 
+const broadcastClients = (wss) => {
+  const clients = [...wss.clients];
+
+  const clientsData = clients.map((client) => {
+    return {
+      id: client.id,
+      username: client.username,
+    };
+  });
+
+  clients.forEach((client) => {
+    client.send(JSON.stringify({ clients: clientsData }));
+  });
+};
+
 function run(server) {
   const wss = new ws.WebSocketServer({ server });
 
@@ -24,17 +35,39 @@ function run(server) {
     const { id, username } = await getUserData(req);
     connection.id = id;
     connection.username = username;
+    console.log(`${username} connected`);
 
-    const clients = getClients(wss);
-    const clientsData = clients.map((client) => {
-      return {
-        id: client.id,
-        username: client.username,
-      };
+    // send all connected clients the connected client list
+    broadcastClients(wss);
+
+    // ping client and start disconnect timer
+    connection.pingTimer = setInterval(() => {
+      connection.ping();
+      connection.deathTimer = setTimeout(() => {
+        // kill connection
+        clearInterval(connection.pingTimer);
+        connection.terminate();
+        console.log(`${username} timed out`);
+
+        // send everyone the new client list
+        broadcastClients(wss);
+      }, 1000);
+    }, 5000);
+
+    // ping back received - cancel disconnect timer
+    connection.on('pong', () => {
+      clearTimeout(connection.deathTimer);
     });
 
-    clients.forEach((client) => {
-      client.send(JSON.stringify({ clients: clientsData }));
+    // pass on user message via ws
+    connection.on('message', (data) => {
+      const message = JSON.parse(data.toString());
+
+      const recipient = [...wss.clients].find(
+        (client) => client.id === message.recipientId
+      );
+
+      if (recipient) recipient.send(JSON.stringify({ message }));
     });
   });
 }

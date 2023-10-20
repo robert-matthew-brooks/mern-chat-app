@@ -118,8 +118,8 @@ export default function Login() {
         />
 
         <div id="Login__btn-wrapper">
-          <button onClick={handleRegister}>Register</button>
-          <button onClick={handleLogin}>Login</button>
+          <input type="button" value="Register" onClick={handleRegister} />
+          <input type="submit" value="Login" onClick={handleLogin} />
         </div>
 
         <p

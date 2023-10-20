@@ -33,7 +33,7 @@
   gap: 1rem;
 }
 
-#Login__btn-wrapper > button {
+#Login__btn-wrapper > input {
   flex: 1;
   padding: 1rem;
   color: var(--text-light);
@@ -42,7 +42,7 @@
   border: 1px solid var(--form-border-colour);
   cursor: pointer;
 }
-#Login__btn-wrapper > button:hover {
+#Login__btn-wrapper > input:hover {
   background-color: var(--form-btn-hover-bg-colour);
 }
 

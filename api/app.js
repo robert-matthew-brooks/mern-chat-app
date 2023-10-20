@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const { dbConnect } = require('./db/connection');
 const userController = require('./controllers/user-controller');
 const usersController = require('./controllers/users-controller');
+const messagesController = require('./controllers/messages-controller');
 const errorHandlers = require('./error-handlers');
 
 // init
@@ -41,6 +42,9 @@ app.post('/user/contacts', userController.addContact);
 app.patch('/user/contacts', userController.removeContact);
 
 app.get('/users/filter', usersController.filterUsers);
+
+app.get('/messages', messagesController.getMessages);
+app.post('/messages', messagesController.addMessage);
 
 app.all('*', (_req, res, _next) => {
   res.status(404).send({ msg: 'endpoint not found' });

@@ -1,11 +1,12 @@
 #Nav {
+  height: var(--nav-height);
   grid-area: nav;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
   align-items: center;
   gap: 2rem;
-  padding: 1rem;
+  padding: 0 1rem;
   background-color: lightgreen;
 }
 

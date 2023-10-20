@@ -2,7 +2,7 @@ import { useContext } from 'react';
 import { UserContext } from '../UserContext';
 import './Contact.css';
 
-export default function Contact({ contact, isActive }) {
+export default function Contact({ contact, isOnline, isActive }) {
   const { setActiveContact } = useContext(UserContext);
 
   const handleContactClick = (contact) => {
@@ -11,13 +11,17 @@ export default function Contact({ contact, isActive }) {
 
   return (
     <div
-      className={`Contact ${isActive && 'Contact--active'}`}
+      className={`
+        Contact
+        ${isOnline && 'Contact--online'}
+        ${isActive && 'Contact--active'}
+      `}
       onClick={() => {
         handleContactClick(contact);
       }}
     >
       <div className="Contact__avatar">{contact.username[0]}</div>
-      <div>{contact.username}</div>
+      <div className="Contact__username">{contact.username}</div>
     </div>
   );
 }

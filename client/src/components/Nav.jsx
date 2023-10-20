@@ -4,11 +4,12 @@ import { logout } from '../js/api';
 import Search from './Search';
 import './Nav.css';
 
-export default function Nav() {
+export default function Nav({ ws }) {
   const { setUser } = useContext(UserContext);
 
   const handleLogout = async () => {
     await logout();
+    ws.close();
     setUser(null);
   };
 

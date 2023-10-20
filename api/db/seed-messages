@@ -1,5 +1,32 @@
-0_1_Hi
-1_0_Hi, this is a test conversation
-0_1_Oh
-1_0_That's great
-1_0_Yup
+1_0_Hey nice chat app :)
+0_1_Thanks!
+1_0_I just don't want to break anything by deleting stuff from your backend database...
+0_1_Don't worry - when someone logs in on the test account, there is a 10 minute countdown before the backend data re-seeds itself.
+0_1_So you can play around with deleting, posting... it will all get re-seeded shortly :)
+1_0_Cool thanks!
+
+0_2_Hey there, how's it going?
+2_0_Hi, good thanks, but I could with a chat :D How are you?
+0_2_Well actually I'm only testing my chat app layout. So I need to send some messages so I can see how they will render on the frontend.
+2_0_Oh.
+0_2_Yeah - one of the things I need to do is send a pretty long message that will go over the length of one line on the chat message bubble. Then I can check how the chat bubble layout responds.
+2_0_So... how is it...
+0_2_Yeah, just need to tweak the line height on multi-line messages...
+2_0_Great. :| Is that all you wanted?
+0_2_Well actually...
+2_0_Yeah?
+0_2_...I wonder...
+0_2_...if sending multiple messages from the same user...
+0_2_...will display correctly?
+2_0_...
+0_2_Also,
+0_2_if I can push the screen down
+0_2_a bit further
+0_2_I can see
+0_2_if the horizontal scrolling
+0_2_works correctly.
+2_0_Fascinating.
+2_0_I hope it works out.
+0_2_As well as my laptop monitor, I've got a pretty big second monitor. So I could do with sending an even longer line of text to check it overflows correctly. I like to make sure everything is checked on really large screens as well as small screens like mobile devices.
+2_0_Look, I know you're busy but I just wanted to say...
+0_2_Alright! Tests complete! thanks, see you later

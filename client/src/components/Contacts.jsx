@@ -3,7 +3,7 @@ import { UserContext } from '../UserContext';
 import Contact from './Contact';
 import './Contacts.css';
 
-export default function Sidebar() {
+export default function Sidebar({ onlineUserIds }) {
   const { contacts, activeContact } = useContext(UserContext);
 
   return (
@@ -11,8 +11,14 @@ export default function Sidebar() {
       <h2 className="Contacts__title">Contacts:</h2>
       <div className="Contacts__list">
         {contacts.map((contact, i) => {
-          const isActive = contact.username === activeContact?.username;
-          return <Contact key={i} contact={contact} isActive={isActive} />;
+          return (
+            <Contact
+              key={i}
+              contact={contact}
+              isOnline={onlineUserIds.includes(contact._id)}
+              isActive={contact.username === activeContact?.username}
+            />
+          );
         })}
       </div>
     </aside>

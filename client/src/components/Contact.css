@@ -16,10 +16,17 @@
   background-color: #f0f0f0;
 }
 
+.Contact--online > .Contact__avatar {
+  border: 2px solid red;
+}
+
 .Contact--active {
-  background-color: #e0e0e0 !important;
+  background-color: var(--chat-bg-colour) !important;
   border-left: 5px solid green;
   padding-left: calc(var(--contact-padding) - var(--contact-active-border));
+}
+.Contact--active > .Contact__username {
+  font-weight: bold;
 }
 
 .Contact__avatar {
@@ -32,4 +39,8 @@
   font-size: 1.3rem;
   background-color: #707070;
   border-radius: 50%;
+}
+
+.Contact__username {
+  font-size: 0.9rem;
 }

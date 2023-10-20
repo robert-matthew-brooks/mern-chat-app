@@ -45,3 +45,19 @@ export async function removeContact(userId, contactId) {
   });
   return data;
 }
+
+export async function getMessages(userId, contactId) {
+  const { data } = await api.get('/messages', {
+    params: { user_id: userId, contact_id: contactId },
+  });
+  return data;
+}
+
+export async function addMessage(userId, contactId, body) {
+  const { data } = await api.post('/messages', {
+    user_id: userId,
+    contact_id: contactId,
+    body,
+  });
+  return data;
+}
