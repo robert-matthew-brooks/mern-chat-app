@@ -45,6 +45,8 @@
 }
 
 #Chat__form__button {
+  height: 100%;
+  aspect-ratio: 1;
   padding: 0.1rem;
   background-color: #4040e0;
   border: none;

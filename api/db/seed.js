@@ -1,41 +1,42 @@
 const fs = require('fs');
-const { db, dbConnect, User, Message } = require('./connection');
+const { User, Message, dbConnect, dbDisconnect } = require('./connection');
 const { hash } = require('./encrypt');
 
-const totalFriends = 3;
+const seedUsername = 'bob_test';
 const seedPassword = 'testpass1';
+const totalUsers = 50;
+const totalFriends = 3;
+const timestamp = new Date();
+timestamp.setHours(timestamp.getHours() - 5);
 
-const seedUsernames = [
-  'Bob',
-  ...fs
-    .readFileSync(`${__dirname}/seed-names`, 'utf-8')
-    .split('\n')
-    .filter((name) => name.length > 0)
-    .sort(() => Math.random() - 0.5)
-    .slice(0, 50),
-];
+async function insertTestData() {
+  // get test data
 
-const seedMessages = [
-  ...fs
-    .readFileSync(`${__dirname}/seed-messages`, 'utf-8')
-    .split('\n')
-    .filter((name) => name.length > 0)
-    .map((rawMsg) => {
-      const rawMsgArr = rawMsg.split('_');
-      return {
-        senderIndex: +rawMsgArr[0],
-        recipientIndex: +rawMsgArr[1],
-        body: rawMsgArr[2],
-      };
-    }),
-];
+  const seedUsernames = [
+    seedUsername,
+    ...fs
+      .readFileSync(`${__dirname}/seed-names`, 'utf-8')
+      .split('\n')
+      .filter((name) => name.length > 0)
+      .sort(() => Math.random() - 0.5)
+      .slice(0, totalUsers)
+      .map((name) => `${name.toLowerCase()}_test`),
+  ];
 
-async function seed() {
-  // clear old db
-
-  await dbConnect();
-  await User.collection.drop();
-  await Message.collection.drop();
+  const seedMessages = [
+    ...fs
+      .readFileSync(`${__dirname}/seed-messages`, 'utf-8')
+      .split('\n')
+      .filter((name) => name.length > 0)
+      .map((rawMsg) => {
+        const rawMsgArr = rawMsg.split('_');
+        return {
+          senderIndex: +rawMsgArr[0],
+          recipientIndex: +rawMsgArr[1],
+          body: rawMsgArr[2],
+        };
+      }),
+  ];
 
   // make all test users
 
@@ -44,8 +45,9 @@ async function seed() {
 
   for (const username of seedUsernames) {
     hashedUsers.push({
-      username: `${username}_test`,
+      username,
       password: hashedSeedPassword,
+      isTest: true,
     });
   }
 
@@ -53,7 +55,7 @@ async function seed() {
 
   await User.insertMany(hashedUsers);
 
-  const testUser = await User.findOne(
+  const bobUser = await User.findOne(
     { username: hashedUsers[0].username },
     { _id: 1 }
   );
@@ -73,10 +75,10 @@ async function seed() {
 
   const friends = await Promise.all(friendPromises);
 
-  // push user ids into Bob_test friend list
+  // push user ids into bob_test friend list
 
   await User.updateOne(
-    { _id: testUser._id },
+    { _id: bobUser._id },
     {
       $push: {
         contactIds: friends.map((friend) => friend._id),
@@ -84,20 +86,50 @@ async function seed() {
     }
   );
 
-  // push conversations into db
+  // push user bob_test into friends' friend list
 
-  const testUsers = [testUser, ...friends];
-
-  for (const message of seedMessages) {
-    // nb don't use Promise.all, run awaits sequentially to maintain message order
-    await Message.create({
-      senderId: testUsers[message.senderIndex]._id,
-      recipientId: testUsers[message.recipientIndex]._id,
-      body: message.body,
-    });
+  for (const friend of friends) {
+    await User.updateOne(
+      { _id: friend._id },
+      {
+        $push: {
+          contactIds: bobUser._id,
+        },
+      }
+    );
   }
 
-  await db.disconnect();
+  // push conversations into db
+
+  const testUsers = [bobUser, ...friends];
+  const messagePromises = [];
+
+  for (const message of seedMessages) {
+    messagePromises.push(
+      Message.create({
+        senderId: testUsers[message.senderIndex]._id,
+        recipientId: testUsers[message.recipientIndex]._id,
+        body: message.body,
+        createdAt: timestamp.setMinutes(timestamp.getMinutes() + 3),
+      })
+    );
+  }
+
+  await Promise.all(messagePromises);
 }
 
-seed();
+async function seed() {
+  await dbConnect();
+  await Promise.all([User.collection.drop(), Message.collection.drop()]);
+  await insertTestData();
+  await dbDisconnect();
+}
+
+async function reSeed() {
+  await User.deleteMany({ isTest: true });
+  // this will cascade delete all test message/contact data
+
+  await insertTestData();
+}
+
+module.exports = { seed, reSeed };

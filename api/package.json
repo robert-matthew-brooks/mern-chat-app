@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "seed": "node db/seed.js",
+    "seed": "node db/seed-run.js",
     "listen": "nodemon listen.js"
   },
   "dependencies": {

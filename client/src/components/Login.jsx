@@ -10,7 +10,7 @@ export default function Login() {
   const { setUser } = useContext(UserContext);
 
   const autofill = () => {
-    setUsername('Bob_test');
+    setUsername('bob_test');
     setPassword('testpass1');
   };
 
@@ -136,7 +136,7 @@ export default function Login() {
         or use a demo account:
         <br />
         <br />
-        Username: Bob_test
+        Username: bob_test
         <br />
         Password: testpass1
         <br />

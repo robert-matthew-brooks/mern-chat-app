@@ -26,7 +26,10 @@ async function getProfile(token) {
 
 async function register(username, password) {
   const hashedPassword = hash(password);
-  const createdUser = await User.create({ username, password: hashedPassword });
+  const createdUser = await User.create({
+    username: username.toLowerCase(),
+    password: hashedPassword,
+  });
   createdUser.contacts = [];
 
   return {
@@ -41,7 +44,11 @@ async function register(username, password) {
 
 async function login(username, password) {
   const response = await User.aggregate([
-    { $match: { username } },
+    {
+      $match: {
+        username: username.toLowerCase(),
+      },
+    },
     {
       $lookup: {
         from: 'users',
