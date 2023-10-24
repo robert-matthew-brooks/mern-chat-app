@@ -23,10 +23,8 @@ async function getUserDataFromReq(req) {
 
     tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
     token = tokenCookieStr.split('=')[1];
-    console.log('check token');
     if (!token) reject({ msg: 'no cookie provided' });
 
-    console.log('verify token');
     const userData = jwt.verify(token, jwtSecret, {});
     resolve({ userData });
   });
