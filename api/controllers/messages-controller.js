@@ -6,6 +6,7 @@ async function getMessages(req, res, next) {
 
   try {
     const { id } = await getUserDataFromReq(req);
+    console.log(id, contactId);
     const { messages } = await messagesModel.getMessages(id, contactId);
 
     res.status(200).send({ messages });

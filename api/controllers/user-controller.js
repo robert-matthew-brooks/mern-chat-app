@@ -4,7 +4,7 @@ const { getUserDataFromReq } = require('../util/token');
 
 async function getProfile(req, res, next) {
   try {
-    const { userData } = await getUserDataFromReq(req);
+    const userData = await getUserDataFromReq(req);
     res.status(200).send({ user_data: userData });
   } catch (err) {
     next(err);

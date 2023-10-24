@@ -26,7 +26,7 @@ async function getUserDataFromReq(req) {
     if (!token) reject({ msg: 'no cookie provided' });
 
     const userData = jwt.verify(token, jwtSecret, {});
-    resolve({ userData });
+    resolve(userData);
   });
 }
 
