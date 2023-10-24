@@ -6,22 +6,22 @@ const api = axios.create({
 });
 
 export async function getProfileFromToken() {
-  const { data } = await api.get('/user/profile');
+  const { data } = await api.get('/user');
   return data.user_data;
 }
 
 export async function register(username, password) {
-  const { data } = await api.post('/user/register', { username, password });
+  const { data } = await api.post('/user', { username, password });
   return data.registered_user;
 }
 
 export async function login(username, password) {
-  const { data } = await api.post('/user/login', { username, password });
+  const { data } = await api.post('/login', { username, password });
   return data.found_user;
 }
 
 export async function logout() {
-  await api.post('/user/logout');
+  await api.post('/logout');
 }
 
 export async function deleteUser() {
@@ -29,39 +29,29 @@ export async function deleteUser() {
 }
 
 // used in search bar
-export async function filterUsers(term, limit) {
-  const { data } = await api.get('/users/filter', { params: { term, limit } });
-  return data;
-}
-
-export async function addContact(userId, contactId) {
-  const { data } = await api.post('/user/contacts', {
-    user_id: userId,
-    contact_id: contactId,
+export async function findUsers(term, limit) {
+  const { data } = await api.get(`/find/${term}`, {
+    params: { limit },
   });
   return data;
 }
 
-export async function removeContact(userId, contactId) {
-  const { data } = await api.patch('/user/contacts', {
-    user_id: userId,
-    contact_id: contactId,
-  });
+export async function addContact(contactId) {
+  const { data } = await api.post(`/contacts/${contactId}`);
   return data;
 }
 
-export async function getMessages(userId, contactId) {
-  const { data } = await api.get('/messages', {
-    params: { user_id: userId, contact_id: contactId },
-  });
+export async function removeContact(contactId) {
+  const { data } = await api.delete(`/contacts/${contactId}`);
   return data;
 }
 
-export async function addMessage(userId, contactId, body) {
-  const { data } = await api.post('/messages', {
-    user_id: userId,
-    contact_id: contactId,
-    body,
-  });
+export async function getMessages(contactId) {
+  const { data } = await api.get(`/messages/${contactId}`);
+  return data;
+}
+
+export async function addMessage(contactId, body) {
+  const { data } = await api.post(`/messages/${contactId}`, { body });
   return data;
 }

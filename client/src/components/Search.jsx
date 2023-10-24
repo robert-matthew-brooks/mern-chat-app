@@ -1,7 +1,7 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../UserContext';
 import ClearBtn from './ClearBtn';
-import { filterUsers, addContact } from '../js/api';
+import { findUsers, addContact } from '../js/api';
 import './Search.css';
 
 export default function Search() {
@@ -17,7 +17,7 @@ export default function Search() {
       if (!/^[\w\d]+$/i.test(searchStr)) {
         setFoundUsers([]);
       } else {
-        const { found_users: foundUsers } = await filterUsers(searchStr, 10);
+        const { found_users: foundUsers } = await findUsers(searchStr, 10);
         setFoundUsers(foundUsers.filter((user) => user.username !== username));
       }
     }
@@ -32,7 +32,7 @@ export default function Search() {
       }).length > 0;
 
     if (!isAlreadyContact) {
-      await addContact(id, userToAdd._id);
+      await addContact(userToAdd._id);
       setContacts([userToAdd, ...contacts]);
     }
 

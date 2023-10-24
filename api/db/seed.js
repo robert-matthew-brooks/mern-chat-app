@@ -1,6 +1,6 @@
 const fs = require('fs');
 const { User, Message, dbConnect, dbDisconnect } = require('./connection');
-const { hash } = require('./encrypt');
+const { hash } = require('../util/encrypt');
 
 const seedUsername = 'bob_test';
 const seedPassword = 'testpass1';

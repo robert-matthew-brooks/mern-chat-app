@@ -52,7 +52,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
       // update backend server
       try {
-        await addMessage(id, activeContact._id, message);
+        await addMessage(activeContact._id, message);
       } catch (err) {
         console.error(err);
       }
@@ -67,9 +67,13 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
     (async () => {
       try {
-        const { messages } = await getMessages(id, activeContact?._id);
-        setMessages(messages);
-        updateTip(messages);
+        if (activeContact) {
+          const { messages } = await getMessages(activeContact?._id);
+          setMessages(messages);
+          updateTip(messages);
+        } else {
+          updateTip();
+        }
       } catch (err) {
         console.error(err);
       }

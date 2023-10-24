@@ -2,9 +2,8 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { dbConnect, dbDisconnect } = require('./db/connection');
+const { dbConnect } = require('./db/connection');
 const userController = require('./controllers/user-controller');
-const usersController = require('./controllers/users-controller');
 const messagesController = require('./controllers/messages-controller');
 const errorHandlers = require('./error-handlers');
 const { reSeed } = require('./db/seed');
@@ -45,19 +44,17 @@ app.get('/status', (_req, res, _next) => {
   res.status(200).send('Server OK');
 });
 
-app.get('/user/profile', userController.getProfile);
-app.post('/user/register', userController.register);
-app.post('/user/login', userController.login);
-app.post('/user/logout', userController.logout);
+app.get('/user', userController.getProfile);
+app.post('/user', userController.register);
+app.post('/login', userController.login);
+app.post('/logout', userController.logout);
 app.delete('/user', userController.deleteUser);
+app.get('/find/:term', userController.findUsers);
+app.post('/contacts/:contact_id', userController.addContact);
+app.delete('/contacts/:contact_id', userController.removeContact);
 
-app.post('/user/contacts', userController.addContact);
-app.patch('/user/contacts', userController.removeContact);
-
-app.get('/users/filter', usersController.filterUsers);
-
-app.get('/messages', messagesController.getMessages);
-app.post('/messages', messagesController.addMessage);
+app.get('/messages/:contact_id', messagesController.getMessages);
+app.post('/messages/:contact_id', messagesController.addMessage);
 
 app.all('*', (_req, res, _next) => {
   res.status(404).send({ msg: 'endpoint not found' });

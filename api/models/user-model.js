@@ -1,28 +1,6 @@
 const { User } = require('../db/connection');
-const dotenv = require('dotenv');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const { hash } = require('../db/encrypt');
-
-dotenv.config();
-const jwtSecret = process.env.JWT_SECRET;
-
-const makeToken = (user) => {
-  return jwt.sign(
-    {
-      id: user._id,
-      username: user.username,
-      contacts: user.contacts,
-    },
-    jwtSecret,
-    {}
-  );
-};
-
-function getProfile(token) {
-  const userData = jwt.verify(token, jwtSecret, {});
-  return { userData };
-}
+const { hash, isEncryptedMatch } = require('../util/encrypt');
+const { makeToken } = require('../util/token');
 
 async function register(username, password) {
   const hashedPassword = hash(password);
@@ -64,8 +42,7 @@ async function login(username, password) {
   const foundUser = response[0];
 
   if (foundUser) {
-    const isPassOk = bcrypt.compareSync(password, foundUser.password);
-    if (isPassOk) {
+    if (isEncryptedMatch(password, foundUser.password)) {
       return {
         foundUser: {
           id: foundUser._id,
@@ -82,8 +59,31 @@ async function login(username, password) {
   }
 }
 
-async function deleteUser(token) {
-  console.log(getProfile(token));
+async function deleteUser(userId) {
+  const deletedInfo = await User.deleteOne({
+    _id: userId,
+  });
+
+  return { deletedInfo };
+}
+
+async function findUsers(term, limit = 10) {
+  const foundUsers = await User.aggregate([
+    {
+      $match: {
+        username: { $regex: term, $options: 'i' },
+      },
+    },
+    { $limit: +limit },
+    {
+      $project: {
+        _id: '$_id',
+        username: '$username',
+      },
+    },
+  ]);
+
+  return { foundUsers };
 }
 
 async function addContact(userId, contactId) {
@@ -104,10 +104,10 @@ async function removeContact(userId, contactId) {
 }
 
 module.exports = {
-  getProfile,
   register,
   login,
   deleteUser,
+  findUsers,
   addContact,
   removeContact,
 };

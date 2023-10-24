@@ -1,17 +1,5 @@
 const ws = require('ws');
-const { getProfile } = require('./models/user-model');
-
-const getUserData = async (req) => {
-  const cookies = req.headers.cookie;
-  tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
-  if (tokenCookieStr) {
-    token = tokenCookieStr.split('=')[1];
-    if (token) {
-      const { userData } = await getProfile(token);
-      return { id: userData.id, username: userData.username };
-    }
-  }
-};
+const { getUserDataFromReq } = require('./util/token');
 
 const broadcastClients = (wss) => {
   const clients = [...wss.clients];
@@ -32,7 +20,7 @@ function run(server) {
   const wss = new ws.WebSocketServer({ server });
 
   wss.on('connection', async (connection, req) => {
-    const { id, username } = await getUserData(req);
+    const { id, username } = await getUserDataFromReq(req);
     connection.id = id;
     connection.username = username;
     console.log(`${username} connected`);

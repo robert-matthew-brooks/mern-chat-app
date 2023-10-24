@@ -1,10 +1,12 @@
 const messagesModel = require('../models/messages-model');
+const { getUserDataFromReq } = require('../util/token');
 
 async function getMessages(req, res, next) {
-  const { user_id: userId, contact_id: contactId } = req.query;
+  const { contact_id: contactId } = req.params;
 
   try {
-    const { messages } = await messagesModel.getMessages(userId, contactId);
+    const { id } = await getUserDataFromReq(req);
+    const { messages } = await messagesModel.getMessages(id, contactId);
 
     res.status(200).send({ messages });
   } catch (err) {
@@ -13,11 +15,13 @@ async function getMessages(req, res, next) {
 }
 
 async function addMessage(req, res, next) {
-  const { user_id: userId, contact_id: contactId, body } = req.body;
+  const { contact_id: contactId } = req.params;
+  const { body } = req.body;
 
   try {
+    const { id } = await getUserDataFromReq(req);
     const { postedMessage } = await messagesModel.addMessage(
-      userId,
+      id,
       contactId,
       body
     );

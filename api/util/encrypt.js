@@ -6,4 +6,8 @@ function hash(password) {
   return hashedPassword;
 }
 
-module.exports = { hash };
+function isEncryptedMatch(passA, passB) {
+  return bcrypt.compareSync(passA, passB);
+}
+
+module.exports = { hash, isEncryptedMatch };

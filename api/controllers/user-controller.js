@@ -1,15 +1,11 @@
+const jwt = require('jsonwebtoken');
 const userModel = require('../models/user-model');
+const { getUserDataFromReq } = require('../util/token');
 
-async function getProfile(req, res, next) {
-  const token = req.cookies?.token;
-
+function getProfile(req, res, next) {
   try {
-    if (token) {
-      const { userData } = await userModel.getProfile(token);
-      res.status(200).send({ user_data: userData });
-    } else {
-      res.status(401).send({ msg: 'no cookie provided' });
-    }
+    const { userData } = getUserDataFromReq(req);
+    res.status(200).send({ user_data: userData });
   } catch (err) {
     next(err);
   }
@@ -61,20 +57,33 @@ async function logout(_req, res, next) {
 }
 
 async function deleteUser(req, res, next) {
-  const token = req.cookies?.token;
   try {
-    await userModel.deleteUser(token);
-    res.status(204).cookie('token', {}).send();
+    const { id } = await getUserDataFromReq(req);
+    const { deletedInfo } = await userModel.deleteUser(id);
+    res.status(204).cookie('token', {}).send({ deletedInfo });
+  } catch (err) {
+    next(err);
+  }
+}
+
+async function findUsers(req, res, next) {
+  const { term } = req.params;
+  const { limit } = req.query;
+
+  try {
+    const { foundUsers } = await userModel.findUsers(term, limit);
+    res.status(200).send({ found_users: foundUsers });
   } catch (err) {
     next(err);
   }
 }
 
 async function addContact(req, res, next) {
-  const { user_id: userId, contact_id: contactId } = req.body;
+  const { contact_id: contactId } = req.params;
 
   try {
-    const { response } = await userModel.addContact(userId, contactId);
+    const { id } = await getUserDataFromReq(req);
+    const { response } = await userModel.addContact(id, contactId);
     res.status(200).send({ response });
   } catch (err) {
     next(err);
@@ -82,11 +91,11 @@ async function addContact(req, res, next) {
 }
 
 async function removeContact(req, res, next) {
-  const { user_id: userId, contact_id: contactId } = req.body;
-  console.log(req.body);
+  const { contact_id: contactId } = req.params;
 
   try {
-    const { response } = await userModel.removeContact(userId, contactId);
+    const { id } = await getUserDataFromReq(req);
+    const { response } = await userModel.removeContact(id, contactId);
     res.status(200).send({ response });
   } catch (err) {
     next(err);
@@ -99,6 +108,7 @@ module.exports = {
   login,
   logout,
   deleteUser,
+  findUsers,
   addContact,
   removeContact,
 };
