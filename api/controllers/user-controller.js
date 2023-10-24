@@ -2,9 +2,9 @@ const jwt = require('jsonwebtoken');
 const userModel = require('../models/user-model');
 const { getUserDataFromReq } = require('../util/token');
 
-function getProfile(req, res, next) {
+async function getProfile(req, res, next) {
   try {
-    const { userData } = getUserDataFromReq(req);
+    const { userData } = await getUserDataFromReq(req);
     res.status(200).send({ user_data: userData });
   } catch (err) {
     next(err);
@@ -19,10 +19,7 @@ async function register(req, res, next) {
 
     res
       .status(201)
-      .cookie('token', registeredUser.token, {
-        sameSite: 'none',
-        secure: true,
-      })
+      .cookie('token', registeredUser.token)
 
       .send({ registered_user: registeredUser });
   } catch (err) {
@@ -38,10 +35,7 @@ async function login(req, res, next) {
 
     res
       .status(201)
-      .cookie('token', foundUser.token, {
-        sameSite: 'none',
-        secure: true,
-      })
+      .cookie('token', foundUser.token)
       .send({ found_user: foundUser });
   } catch (err) {
     next(err);

@@ -19,17 +19,16 @@ const makeToken = (user) => {
 async function getUserDataFromReq(req) {
   return new Promise((resolve, reject) => {
     const cookies = req.headers?.cookie;
-    tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
+    if (!cookies) reject({ msg: 'no cookie provided' });
 
-    if (tokenCookieStr) {
-      token = tokenCookieStr.split('=')[1];
-      if (token) {
-        const userData = jwt.verify(token, jwtSecret, {});
-        resolve(userData);
-      } else {
-        reject({ msg: 'no cookie provided' });
-      }
-    }
+    tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
+    token = tokenCookieStr.split('=')[1];
+    console.log('check token');
+    if (!token) reject({ msg: 'no cookie provided' });
+
+    console.log('verify token');
+    const userData = jwt.verify(token, jwtSecret, {});
+    resolve({ userData });
   });
 }
 

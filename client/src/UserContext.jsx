@@ -23,7 +23,7 @@ export function UserContextProvider({ children }) {
   useEffect(() => {
     (async () => {
       try {
-        const userData = await api.getProfileFromToken();
+        const userData = await api.getProfileFromCookie();
         setUser(userData);
       } catch (err) {
         if (err?.response?.status === 401) {
