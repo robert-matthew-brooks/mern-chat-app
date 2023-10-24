@@ -12,7 +12,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  color: #808080;
+  color: var(--chat-tip-colour);
   font-size: 1.2rem;
 }
 
@@ -39,7 +39,6 @@
 #Chat__form__input {
   flex: 1;
   padding: 0.5rem;
-  background-color: white;
   border: none;
   outline: none;
 }
@@ -48,12 +47,12 @@
   height: 100%;
   aspect-ratio: 1;
   padding: 0.1rem;
-  background-color: #4040e0;
+  background-color: var(--main-blue);
   border: none;
   cursor: pointer;
 }
 #Chat__form__button > svg {
   height: 100%;
   aspect-ratio: 1;
-  fill: white;
+  fill: var(--text-light);
 }

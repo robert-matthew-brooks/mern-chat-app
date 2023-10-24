@@ -3,7 +3,7 @@
   position: relative;
   display: flex;
   flex-direction: row;
-  background-color: white;
+  background-color: var(--search-bg);
 }
 
 #Search__input {
@@ -19,7 +19,7 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: white;
+  background-color: var(--search-bg);
 }
 
 .Search__results__user,
@@ -29,7 +29,7 @@
   font-size: 0.8rem;
 }
 .Search__results__user:hover {
-  background-color: #fafafa;
+  background-color: var(--search-result-hover-bg);
   cursor: pointer;
 }
 

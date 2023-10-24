@@ -21,15 +21,15 @@
   border-radius: 0.5rem;
 }
 .MsgBubble--user {
-  background-color: lightgreen;
+  background-color: var(--chat-user-message);
 }
 .MsgBubble--contact {
-  background-color: lightblue;
+  background-color: var(--chat-partner-message);
 }
 
-.Message_timestamp {
+.Message__timestamp {
   width: fit-content;
   padding: 0.2rem;
   font-size: 0.7rem;
-  color: #808080;
+  color: var(--chat-timestamp-colour);
 }

@@ -13,16 +13,29 @@
   cursor: pointer;
 }
 .Contact:hover {
-  background-color: #f0f0f0;
+  background-color: var(--contact-hover-bg-colour);
 }
 
+.Contact--online > .Contact__avatar > .Contact__status {
+  background-color: var(--contact-online-colour);
+}
 .Contact--online > .Contact__avatar {
-  border: 2px solid red;
+  background-color: var(--contact-online-bg-colour);
+}
+
+.Contact__status {
+  position: absolute;
+  height: 0.7rem;
+  width: 0.7rem;
+  top: 75%;
+  left: 75%;
+  background-color: var(--contact-offline-colour);
+  border-radius: 50%;
 }
 
 .Contact--active {
-  background-color: var(--chat-bg-colour) !important;
-  border-left: 5px solid green;
+  background-color: var(--contact-active-bg-colour) !important;
+  border-left: 5px solid var(--contact-active-highlight-colour);
   padding-left: calc(var(--contact-padding) - var(--contact-active-border));
 }
 .Contact--active > .Contact__username {
@@ -30,14 +43,15 @@
 }
 
 .Contact__avatar {
+  position: relative;
   width: 3rem;
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  color: white;
+  color: var(--text-light);
   font-size: 1.3rem;
-  background-color: #707070;
+  background-color: var(--contact-avatar-bg-colour);
   border-radius: 50%;
 }
 

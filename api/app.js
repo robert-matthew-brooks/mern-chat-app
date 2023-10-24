@@ -49,6 +49,7 @@ app.get('/user/profile', userController.getProfile);
 app.post('/user/register', userController.register);
 app.post('/user/login', userController.login);
 app.post('/user/logout', userController.logout);
+app.delete('/user', userController.deleteUser);
 
 app.post('/user/contacts', userController.addContact);
 app.patch('/user/contacts', userController.removeContact);

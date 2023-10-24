@@ -130,18 +130,17 @@ export default function Login() {
         </p>
       </form>
 
-      <p>
-        You can register a new account
+      <p id="Login__guide">
+        Demo account:
         <br />
-        or use a demo account:
-        <br />
-        <br />
-        Username: bob_test
-        <br />
-        Password: testpass1
+        (Click to autofill)
         <br />
         <br />
-        <button onClick={autofill}>Click me to autofill...</button>
+        <button onClick={autofill}>
+          bob_test
+          <br />
+          testpass1
+        </button>
       </p>
     </div>
   );

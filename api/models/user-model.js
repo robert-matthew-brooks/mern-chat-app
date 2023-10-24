@@ -19,7 +19,7 @@ const makeToken = (user) => {
   );
 };
 
-async function getProfile(token) {
+function getProfile(token) {
   const userData = jwt.verify(token, jwtSecret, {});
   return { userData };
 }
@@ -82,6 +82,10 @@ async function login(username, password) {
   }
 }
 
+async function deleteUser(token) {
+  console.log(getProfile(token));
+}
+
 async function addContact(userId, contactId) {
   const response = await User.updateOne(
     { _id: userId },
@@ -99,4 +103,11 @@ async function removeContact(userId, contactId) {
   return { response };
 }
 
-module.exports = { getProfile, register, login, addContact, removeContact };
+module.exports = {
+  getProfile,
+  register,
+  login,
+  deleteUser,
+  addContact,
+  removeContact,
+};

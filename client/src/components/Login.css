@@ -60,3 +60,23 @@
 .Login__input--invalid {
   border: 3px solid var(--error-colour) !important;
 }
+
+#Login__guide {
+  line-height: 1.6rem;
+  text-align: center;
+}
+
+#Login__guide > button {
+  padding: 0.5rem;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 1.2rem;
+  line-height: 1.6rem;
+  background-color: var(--form-demo-bg-colour);
+  border: 1px solid var(--form-demo-border-colour);
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+
+#Login__guide > button:hover {
+  border-color: var(--form-demo-hover-border-colour);
+}

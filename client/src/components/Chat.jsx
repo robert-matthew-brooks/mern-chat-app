@@ -10,6 +10,9 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
   const [tip, setTip] = useState(null);
   const [messages, setMessages] = useState([]);
 
+  const inputBox = document.getElementById('Chat__form__input');
+  const messagesBox = document.getElementById('Chat__messages');
+
   const updateTip = (messages) => {
     if (!contacts.length) {
       setTip('↑ Add a user');
@@ -55,6 +58,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
       }
 
       setMessage('');
+      messagesBox.scrollTop = messagesBox.scrollHeight;
     }
   };
 
@@ -70,6 +74,8 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
         console.error(err);
       }
     })();
+
+    if (inputBox) inputBox.focus();
   }, [activeContact]);
 
   return (

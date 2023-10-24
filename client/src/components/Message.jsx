@@ -23,7 +23,7 @@ export default function MsgBubble({ message }) {
         {message.body}
       </p>
 
-      <p className="Message_timestamp">{time}</p>
+      <p className="Message__timestamp">{time}</p>
     </div>
   );
 }

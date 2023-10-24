@@ -60,6 +60,16 @@ async function logout(_req, res, next) {
   }
 }
 
+async function deleteUser(req, res, next) {
+  const token = req.cookies?.token;
+  try {
+    await userModel.deleteUser(token);
+    res.status(204).cookie('token', {}).send();
+  } catch (err) {
+    next(err);
+  }
+}
+
 async function addContact(req, res, next) {
   const { user_id: userId, contact_id: contactId } = req.body;
 
@@ -88,6 +98,7 @@ module.exports = {
   register,
   login,
   logout,
+  deleteUser,
   addContact,
   removeContact,
 };

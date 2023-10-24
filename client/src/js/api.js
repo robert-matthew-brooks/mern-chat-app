@@ -24,6 +24,10 @@ export async function logout() {
   await api.post('/user/logout');
 }
 
+export async function deleteUser() {
+  await api.delete('/user');
+}
+
 // used in search bar
 export async function filterUsers(term, limit) {
   const { data } = await api.get('/users/filter', { params: { term, limit } });

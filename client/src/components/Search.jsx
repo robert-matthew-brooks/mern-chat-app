@@ -5,7 +5,7 @@ import { filterUsers, addContact } from '../js/api';
 import './Search.css';
 
 export default function Search() {
-  const { id, contacts, setContacts, setActiveContact } =
+  const { id, username, contacts, setContacts, setActiveContact } =
     useContext(UserContext);
   const [searchStr, setSearchStr] = useState('');
   const [foundUsers, setFoundUsers] = useState([]);
@@ -18,7 +18,7 @@ export default function Search() {
         setFoundUsers([]);
       } else {
         const { found_users: foundUsers } = await filterUsers(searchStr, 10);
-        setFoundUsers(foundUsers);
+        setFoundUsers(foundUsers.filter((user) => user.username !== username));
       }
     }
   };

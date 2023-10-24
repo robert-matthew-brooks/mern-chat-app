@@ -2,16 +2,45 @@
   --text-dark: #000000;
   --text-light: #ffffff;
 
-  --chat-bg-colour: #e0e0e0;
-
   --link-colour: #0000ff;
   --link-hover-colour: #00008b;
+
+  --error-colour: #ff0000;
+  --error-bg-colour: #ffc0c0;
+
+  /* login */
 
   --form-bg-colour: #ffffff;
   --form-border-colour: #808080;
   --form-btn-bg-colour: #1f388b;
   --form-btn-hover-bg-colour: #334b9c;
+  --form-demo-border-colour: #808080;
+  --form-demo-hover-border-colour: #505050;
+  --form-demo-bg-colour: #eaeaea;
 
-  --error-colour: #ff0000;
-  --error-bg-colour: #ffc0c0;
+  /* main app */
+
+  --main-blue: #334b9c;
+
+  --nav-bg-colour: var(--main-blue);
+  --search-bg: #ffffff;
+  --search-result-hover-bg: #fafafa;
+  --menu-bg-colour: #e0e0e0;
+  --menu-separator-colour: #c0c0c0;
+  --menu-btn-hover-bg-colour: #d0d0d0;
+
+  --contacts-bg-colour: #ffffff;
+  --contact-hover-bg-colour: #f0f0f0;
+  --contact-active-bg-colour: var(--chat-bg-colour);
+  --contact-active-highlight-colour: var(--main-blue);
+  --contact-avatar-bg-colour: #808080;
+  --contact-offline-colour: #ff5050;
+  --contact-online-colour: #20c020;
+  --contact-online-bg-colour: #008000;
+
+  --chat-bg-colour: #e0e0e0;
+  --chat-tip-colour: #808080;
+  --chat-user-message: #a0eea0;
+  --chat-partner-message: #f0f0ff;
+  --chat-timestamp-colour: #808080;
 }

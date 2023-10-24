@@ -20,7 +20,10 @@ export default function Contact({ contact, isOnline, isActive }) {
         handleContactClick(contact);
       }}
     >
-      <div className="Contact__avatar">{contact.username[0]}</div>
+      <div className="Contact__avatar">
+        <div className="Contact__status"></div>
+        {contact.username[0]}
+      </div>
       <div className="Contact__username">{contact.username}</div>
     </div>
   );

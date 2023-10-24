@@ -8,7 +8,6 @@ export default function Sidebar({ onlineUserIds }) {
 
   return (
     <aside className="Contacts">
-      <h2 className="Contacts__title">Contacts:</h2>
       <div className="Contacts__list">
         {contacts.map((contact, i) => {
           return (
