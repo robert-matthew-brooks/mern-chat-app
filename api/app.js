@@ -66,6 +66,7 @@ app.all('*', (_req, res, _next) => {
 // error handling
 
 app.use(errorHandlers.customErrorHandler);
+app.use(errorHandlers.jwtErrorHandler);
 app.use(errorHandlers.mongoErrorHandler);
 app.use(errorHandlers.serverErrorHandler);
 

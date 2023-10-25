@@ -1,10 +1,12 @@
 const jwt = require('jsonwebtoken');
 const userModel = require('../models/user-model');
 const { getUserDataFromCookie } = require('../util/token');
+const { rejectIfNoTokenCookie } = require('../util/validate');
 
 async function getProfile(req, res, next) {
   try {
-    const userData = await getUserDataFromCookie(req);
+    await rejectIfNoTokenCookie(req);
+    const userData = getUserDataFromCookie(req);
     res.status(200).send({ user_data: userData });
   } catch (err) {
     next(err);
@@ -29,6 +31,7 @@ async function register(req, res, next) {
 
 async function deleteUser(req, res, next) {
   try {
+    await rejectIfNoTokenCookie(req);
     const { id } = await getUserDataFromCookie(req);
     const { deletedInfo } = await userModel.deleteUser(id);
     res.status(204).clearCookie('token').send({ deleted_info: deletedInfo });
@@ -76,6 +79,7 @@ async function addContact(req, res, next) {
   const { contact_id: contactId } = req.params;
 
   try {
+    await rejectIfNoTokenCookie(req);
     const { id } = await getUserDataFromCookie(req);
     const { response } = await userModel.addContact(id, contactId);
     res.status(200).send({ response });
@@ -88,6 +92,7 @@ async function removeContact(req, res, next) {
   const { contact_id: contactId } = req.params;
 
   try {
+    await rejectIfNoTokenCookie(req);
     const { id } = await getUserDataFromCookie(req);
     const { response } = await userModel.removeContact(id, contactId);
     res.status(200).send({ response });

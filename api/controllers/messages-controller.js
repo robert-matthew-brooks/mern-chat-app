@@ -1,11 +1,13 @@
 const messagesModel = require('../models/messages-model');
 const { getUserDataFromCookie } = require('../util/token');
+const { rejectIfNoTokenCookie } = require('../util/validate');
 
 async function getMessages(req, res, next) {
   const { contact_id: contactId } = req.params;
   const { limit } = req.query;
 
   try {
+    await rejectIfNoTokenCookie(req);
     const { id } = await getUserDataFromCookie(req);
     const { messages } = await messagesModel.getMessages(id, contactId);
 
@@ -20,6 +22,7 @@ async function addMessage(req, res, next) {
   const { body } = req.body;
 
   try {
+    await rejectIfNoTokenCookie(req);
     const { id } = await getUserDataFromCookie(req);
     const { postedMessage } = await messagesModel.addMessage(
       id,

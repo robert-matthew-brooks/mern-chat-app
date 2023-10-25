@@ -62,12 +62,18 @@ describe('GET /user', () => {
     }
   });
 
-  it('500: should return an error when invalid token provided', async () => {
-    await request(app).get('/user').set('Cookie', 'token=invalid').expect(500);
+  it('403: should return an error when invalid token provided', async () => {
+    const { body } = await request(app)
+      .get('/user')
+      .set('Cookie', 'token=invalid')
+      .expect(403);
+
+    expect(body.msg).toBeDefined();
   });
 
-  it('500: should return an error when no cookie provided', async () => {
-    await request(app).get('/user').expect(500);
+  it('403: should return an error when no cookie provided', async () => {
+    const { body } = await request(app).get('/user').expect(403);
+    expect(body.msg).toBeDefined();
   });
 });
 
@@ -94,8 +100,18 @@ describe('POST /user (register)', () => {
     expect(registeredUser.username).toBe('bob');
   });
 
-  it('500: should return an error if no user data is provided', async () => {
-    await request(app).post('/user').expect(500);
+  it('422: should return an error if username already exists', async () => {
+    const { body } = await request(app)
+      .post('/user')
+      .send({ username, password })
+      .expect(422);
+
+    expect(body.msg).toBeDefined();
+  });
+
+  it('400: should return an error if no user data is provided', async () => {
+    const { body } = await request(app).post('/user').expect(400);
+    expect(body.msg).toBeDefined();
   });
 });
 
@@ -122,8 +138,23 @@ describe('DELETE /user', () => {
     expect(response.headers['set-cookie'][0]).toContain('token=;');
   });
 
-  it('500: should return an error if no user data is provided', async () => {
-    await request(app).delete('/user').expect(500);
+  it('404: should return an error if user not found', async () => {
+    await request(app)
+      .delete('/user')
+      .set('Cookie', `token=${token}`)
+      .expect(204);
+
+    const { body } = await request(app)
+      .delete('/user')
+      .set('Cookie', `token=${token}`)
+      .expect(404);
+
+    expect(body.msg).toBeDefined();
+  });
+
+  it('403: should return an error if no user data is provided', async () => {
+    const { body } = await request(app).delete('/user').expect(403);
+    expect(body.msg).toBeDefined();
   });
 });
 
@@ -164,18 +195,33 @@ describe('POST /login', () => {
     expect(response.headers['set-cookie'][0]).toContain(token);
   });
 
-  it('403: should return an error if user details are invalid', async () => {
-    await request(app)
+  it('401: should return an error if username is invalid', async () => {
+    const { body } = await request(app)
       .post('/login')
       .send({
         username: 'invalid',
+        password,
+      })
+      .expect(401);
+
+    expect(body.msg).toBeDefined();
+  });
+
+  it('403: should return an error if password is invalid', async () => {
+    const { body } = await request(app)
+      .post('/login')
+      .send({
+        username,
         password: 'invalid',
       })
       .expect(403);
+
+    expect(body.msg).toBeDefined();
   });
 
-  it('500: should return an error if no user data is provided', async () => {
-    await request(app).post('/login').expect(500);
+  it('400: should return an error if no user data is provided', async () => {
+    const { body } = await request(app).post('/login').expect(400);
+    expect(body.msg).toBeDefined();
   });
 });
 
@@ -217,7 +263,7 @@ describe('GET /find/:term', () => {
     expect(body.found_users.length).toBe(10);
   });
 
-  it('200: should specified number of results', async () => {
+  it('200: should return specified number of results', async () => {
     const { body } = await request(app).get('/find/_test?limit=20').expect(200);
     expect(body.found_users.length).toBe(20);
   });
@@ -239,15 +285,21 @@ describe('POST /contacts/:contact_id', () => {
     ).toContain(strangerId.toString());
   });
 
-  it('500: should return an error if contact is invalid', async () => {
-    await request(app)
+  it('404: should return an error if contact is invalid', async () => {
+    const { body } = await request(app)
       .post('/contacts/invalid')
       .set('Cookie', `token=${token}`)
-      .expect(500);
+      .expect(404);
+
+    expect(body.msg).toBeDefined();
   });
 
-  it('500: should return an error if no user data is provided', async () => {
-    await request(app).post(`/contacts/${strangerId}`).expect(500);
+  it('403: should return an error if no user data is provided', async () => {
+    const { body } = await request(app)
+      .post(`/contacts/${strangerId}`)
+      .expect(403);
+
+    expect(body.msg).toBeDefined();
   });
 });
 
@@ -267,15 +319,21 @@ describe('DELETE /contacts/:contact_id', () => {
     ).not.toContain(friendId.toString());
   });
 
-  it('500: should return an error if contact is invalid', async () => {
-    await request(app)
+  it('404: should return an error if contact is invalid', async () => {
+    const { body } = await request(app)
       .delete('/contacts/invalid')
       .set('Cookie', `token=${token}`)
-      .expect(500);
+      .expect(404);
+
+    expect(body.msg).toBeDefined();
   });
 
-  it('500: should return an error if no user data is provided', async () => {
-    await request(app).delete(`/contacts/${strangerId}`).expect(500);
+  it('403: should return an error if no user data is provided', async () => {
+    const { body } = await request(app)
+      .delete(`/contacts/${strangerId}`)
+      .expect(403);
+
+    expect(body.msg).toBeDefined();
   });
 });
 
@@ -303,52 +361,65 @@ describe('GET /messages/:contact_id', () => {
     }
   });
 
-  it('500: should return an error if contact is invalid', async () => {
-    await request(app)
+  it('404: should return an error if contact is invalid', async () => {
+    const { body } = await request(app)
       .get('/messages/invalid')
       .set('Cookie', `token=${token}`)
-      .expect(500);
+      .expect(404);
+
+    expect(body.msg).toBeDefined();
   });
 
-  it('500: should return an error if no user data is provided', async () => {
-    await request(app).get(`/messages/${friendId}`).expect(500);
+  it('403: should return an error if no user data is provided', async () => {
+    const { body } = await request(app)
+      .get(`/messages/${friendId}`)
+      .expect(403);
+
+    expect(body.msg).toBeDefined();
   });
 });
 
 describe('POST /messages/:contact_id', () => {
   it('201: should create the message', async () => {
-    const body = 'this is a message';
+    const messageBody = 'this is a message';
 
     await request(app)
       .post(`/messages/${friendId}`)
       .set('Cookie', `token=${token}`)
-      .send({ body })
+      .send({ body: messageBody })
       .expect(201);
 
-    const message = await Message.findOne({ body });
+    const message = await Message.findOne({ body: messageBody });
     expect(message).toBeDefined();
   });
 
-  it('500: should return an error if no message is provided', async () => {
-    await request(app)
+  it('400: should return an error if no message is provided', async () => {
+    const { body } = await request(app)
       .post(`/messages/${friendId}`)
       .set('Cookie', `token=${token}`)
-      .expect(500);
+      .expect(400);
   });
 
-  it('500: should return an error if contact is invalid', async () => {
-    const body = 'this is a message';
+  it('404: should return an error if contact is invalid', async () => {
+    const messageBody = 'this is a message';
 
-    await request(app)
+    const { body } = await request(app)
       .post('/messages/invalid')
       .set('Cookie', `token=${token}`)
-      .send({ body })
-      .expect(500);
+      .send({ body: messageBody })
+      .expect(404);
+
+    expect(body.msg).toBeDefined();
   });
 
-  it('500: should return an error if no user data is provided', async () => {
-    const body = 'this is a message';
+  it('403: should return an error if no user data is provided', async () => {
+    const messageBody = 'this is a message';
 
-    await request(app).post(`/messages/${friendId}`).send({ body }).expect(500);
+    const { body } = await request(app)
+      .post(`/messages/${friendId}`)
+      .send({ body: messageBody })
+      .expect(403);
+
+    expect(body.msg).toBeDefined();
   });
 });

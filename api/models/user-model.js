@@ -1,6 +1,7 @@
 const { User } = require('../db/connection');
 const { hash, isEncryptedMatch } = require('../util/encrypt');
 const { makeToken } = require('../util/token');
+const { rejectIfBlank, rejectIfUserIdNotFound } = require('../util/validate');
 
 const getUserDataWithContacts = async (username) => {
   const response = await User.aggregate([
@@ -25,6 +26,8 @@ const getUserDataWithContacts = async (username) => {
 };
 
 async function register(username, password) {
+  await rejectIfBlank({ username, password });
+
   const hashedPassword = hash(password);
   const createdUser = await User.create({
     username: username.toLowerCase(),
@@ -41,6 +44,8 @@ async function register(username, password) {
 }
 
 async function deleteUser(userId) {
+  await rejectIfUserIdNotFound(userId);
+
   const deletedInfo = await User.deleteOne({
     _id: userId,
   });
@@ -49,24 +54,25 @@ async function deleteUser(userId) {
 }
 
 async function login(username, password) {
+  await rejectIfBlank({ username, password });
   const foundUser = await getUserDataWithContacts(username);
 
-  if (foundUser) {
-    if (isEncryptedMatch(password, foundUser.password)) {
-      return {
-        foundUser: {
-          id: foundUser._id,
-          username: foundUser.username,
-          contacts: foundUser.contacts,
-          token: makeToken(foundUser),
-        },
-      };
-    } else {
-      return Promise.reject({ status: 401, msg: 'incorrect password' });
-    }
-  } else {
-    return Promise.reject({ status: 403, msg: 'username not found' });
+  if (!foundUser) {
+    return Promise.reject({ status: 401, msg: 'username not found' });
   }
+
+  if (!isEncryptedMatch(password, foundUser.password)) {
+    return Promise.reject({ status: 403, msg: 'incorrect password' });
+  }
+
+  return {
+    foundUser: {
+      id: foundUser._id,
+      username: foundUser.username,
+      contacts: foundUser.contacts,
+      token: makeToken(foundUser),
+    },
+  };
 }
 
 async function findUsers(term, limit = 10) {
@@ -90,6 +96,8 @@ async function findUsers(term, limit = 10) {
 }
 
 async function addContact(userId, contactId) {
+  await rejectIfUserIdNotFound(contactId);
+
   const response = await User.updateOne(
     { _id: userId },
     { $addToSet: { contactIds: contactId } }
@@ -98,6 +106,8 @@ async function addContact(userId, contactId) {
 }
 
 async function removeContact(userId, contactId) {
+  await rejectIfUserIdNotFound(contactId);
+
   const response = await User.updateOne(
     { _id: userId },
     { $pull: { contactIds: contactId } }
