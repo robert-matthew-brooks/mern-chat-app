@@ -6,7 +6,7 @@ import megaphoneImg from '../assets/megaphone.svg';
 import './Nav.css';
 
 export default function Nav({ ws }) {
-  const { setUser } = useContext(UserContext);
+  const { username, setUser } = useContext(UserContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const toggleMenu = () => {
@@ -53,6 +53,7 @@ export default function Nav({ ws }) {
       </div>
 
       <div id="Nav__user-menu" style={{ top: !isMenuVisible && '0' }}>
+        <p>{username}</p>
         <button onClick={handleDeleteAccount}>Delete Account</button>{' '}
         <button onClick={handleLogout}>Logout</button>{' '}
       </div>

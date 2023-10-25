@@ -51,12 +51,21 @@
   background-color: var(--menu-bg-colour);
   transition: 0.5s top;
 }
+#Nav__user-menu > p {
+  padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  color: #808080;
+}
 
 #Nav__user-menu > button {
   padding: 0.6rem 1rem;
   background-color: transparent;
   border: none;
   border-left: 1px solid var(--menu-separator-colour);
+  font-weight: bold;
   cursor: pointer;
 }
 #Nav__user-menu > button:hover {

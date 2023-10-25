@@ -37,6 +37,8 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
     evt.preventDefault();
 
     if (message) {
+      setTip(null);
+
       const newMessage = {
         senderId: id,
         recipientId: activeContact._id,

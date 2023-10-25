@@ -2,15 +2,7 @@ const db = require('mongoose');
 const dotenv = require('dotenv');
 
 dotenv.config();
-const mongoUrl = process.env.MONGO_URL;
-
-async function dbConnect() {
-  await db.connect(mongoUrl);
-}
-
-async function dbDisconnect() {
-  await db.disconnect();
-}
+const mongoUrl = process.env.TEST_URL;
 
 const UserSchema = new db.Schema(
   {
@@ -62,4 +54,4 @@ const MessageSchema = new db.Schema(
 const User = db.model('User', UserSchema);
 const Message = db.model('Message', MessageSchema);
 
-module.exports = { db, dbConnect, dbDisconnect, User, Message };
+module.exports = { db, mongoUrl, User, Message };

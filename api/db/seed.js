@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { User, Message, dbConnect, dbDisconnect } = require('./connection');
+const { db, mongoUrl, User, Message } = require('./connection');
 const { hash } = require('../util/encrypt');
 
 const seedUsername = 'bob_test';
@@ -119,10 +119,23 @@ async function insertTestData() {
 }
 
 async function seed() {
-  await dbConnect();
-  await Promise.all([User.collection.drop(), Message.collection.drop()]);
+  await db.connect(mongoUrl);
+
+  // drop all existing collections
+  // await Promise.all([User.collection.drop(), Message.collection.drop()]);
+
+  const collections = await db.connection.db.listCollections().toArray();
+
+  const collectionNames = collections.map((collection) => {
+    return collection.name;
+  });
+
+  collectionNames.forEach((collectionName) => {
+    db.connection.db.dropCollection(collectionName);
+  });
+
   await insertTestData();
-  await dbDisconnect();
+  await db.disconnect();
 }
 
 async function reSeed() {

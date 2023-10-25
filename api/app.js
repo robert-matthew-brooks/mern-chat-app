@@ -2,7 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { dbConnect } = require('./db/connection');
+const { db, mongoUrl } = require('./db/connection');
 const userController = require('./controllers/user-controller');
 const messagesController = require('./controllers/messages-controller');
 const errorHandlers = require('./error-handlers');
@@ -14,7 +14,7 @@ dotenv.config();
 const clientUrl = process.env.CLIENT_URL;
 let reseedTimeout;
 
-dbConnect();
+db.connect(mongoUrl);
 const app = express();
 
 // middleware
@@ -27,16 +27,18 @@ app.use(
     origin: clientUrl,
   })
 );
-app.use((req, res, next) => {
-  clearTimeout(reseedTimeout);
+if (process.env.NODE_ENV !== 'test') {
+  app.use((_req, _res, next) => {
+    clearTimeout(reseedTimeout);
 
-  reseedTimeout = setTimeout(async () => {
-    console.log('reseed');
-    await reSeed();
-  }, 600000);
+    reseedTimeout = setTimeout(async () => {
+      console.log('reseed');
+      await reSeed();
+    }, 600000);
 
-  next();
-});
+    next();
+  });
+}
 
 // endpoints
 
