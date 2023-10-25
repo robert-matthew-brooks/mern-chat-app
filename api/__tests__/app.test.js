@@ -62,7 +62,7 @@ describe('GET /user', () => {
     }
   });
 
-  it('403: should return an error when invalid token provided', async () => {
+  it('403: should return an error if invalid token provided', async () => {
     const { body } = await request(app)
       .get('/user')
       .set('Cookie', 'token=invalid')
@@ -71,7 +71,7 @@ describe('GET /user', () => {
     expect(body.msg).toBeDefined();
   });
 
-  it('403: should return an error when no cookie provided', async () => {
+  it('403: should return an error if no cookie provided', async () => {
     const { body } = await request(app).get('/user').expect(403);
     expect(body.msg).toBeDefined();
   });
@@ -152,7 +152,7 @@ describe('DELETE /user', () => {
     expect(body.msg).toBeDefined();
   });
 
-  it('403: should return an error if no user data is provided', async () => {
+  it('403: should return an error if no no cookie provided', async () => {
     const { body } = await request(app).delete('/user').expect(403);
     expect(body.msg).toBeDefined();
   });
@@ -294,7 +294,7 @@ describe('POST /contacts/:contact_id', () => {
     expect(body.msg).toBeDefined();
   });
 
-  it('403: should return an error if no user data is provided', async () => {
+  it('403: should return an error if no cookie provided', async () => {
     const { body } = await request(app)
       .post(`/contacts/${strangerId}`)
       .expect(403);
@@ -328,7 +328,7 @@ describe('DELETE /contacts/:contact_id', () => {
     expect(body.msg).toBeDefined();
   });
 
-  it('403: should return an error if no user data is provided', async () => {
+  it('403: should return an error if no cookie provided', async () => {
     const { body } = await request(app)
       .delete(`/contacts/${strangerId}`)
       .expect(403);
@@ -370,7 +370,7 @@ describe('GET /messages/:contact_id', () => {
     expect(body.msg).toBeDefined();
   });
 
-  it('403: should return an error if no user data is provided', async () => {
+  it('403: should return an error if no cookie provided', async () => {
     const { body } = await request(app)
       .get(`/messages/${friendId}`)
       .expect(403);
@@ -412,7 +412,7 @@ describe('POST /messages/:contact_id', () => {
     expect(body.msg).toBeDefined();
   });
 
-  it('403: should return an error if no user data is provided', async () => {
+  it('403: should return an error if no cookie provided', async () => {
     const messageBody = 'this is a message';
 
     const { body } = await request(app)
