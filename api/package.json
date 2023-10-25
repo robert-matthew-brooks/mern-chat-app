@@ -2,7 +2,7 @@
   "scripts": {
     "seed": "node db/seed-run.js",
     "listen": "nodemon listen.js",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

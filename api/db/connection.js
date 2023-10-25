@@ -1,15 +1,15 @@
-const db = require('mongoose');
+const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
 dotenv.config();
 const mongoUrl = process.env.TEST_URL;
 
-const UserSchema = new db.Schema(
+const UserSchema = new mongoose.Schema(
   {
     username: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     contactIds: {
-      type: [{ type: db.Schema.Types.ObjectId, ref: 'User' }],
+      type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
       default: [],
     },
     isTest: { type: Boolean, required: true, default: false },
@@ -37,11 +37,15 @@ UserSchema.pre('deleteMany', async (next) => {
   }
 });
 
-const MessageSchema = new db.Schema(
+const MessageSchema = new mongoose.Schema(
   {
-    senderId: { type: db.Schema.Types.ObjectId, ref: 'User', required: true },
+    senderId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     recipientId: {
-      type: db.Schema.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
     },
@@ -51,7 +55,7 @@ const MessageSchema = new db.Schema(
   { timestamps: false }
 );
 
-const User = db.model('User', UserSchema);
-const Message = db.model('Message', MessageSchema);
+const User = mongoose.model('User', UserSchema);
+const Message = mongoose.model('Message', MessageSchema);
 
-module.exports = { db, mongoUrl, User, Message };
+module.exports = { mongoose, mongoUrl, User, Message };

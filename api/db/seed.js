@@ -1,5 +1,5 @@
 const fs = require('fs');
-const { db, mongoUrl, User, Message } = require('./connection');
+const { User, Message } = require('./connection');
 const { hash } = require('../util/encrypt');
 
 const seedUsername = 'bob_test';
@@ -119,30 +119,15 @@ async function insertTestData() {
 }
 
 async function seed() {
-  await db.connect(mongoUrl);
-
-  // drop all existing collections
-  // await Promise.all([User.collection.drop(), Message.collection.drop()]);
-
-  const collections = await db.connection.db.listCollections().toArray();
-
-  const collectionNames = collections.map((collection) => {
-    return collection.name;
-  });
-
-  collectionNames.forEach((collectionName) => {
-    db.connection.db.dropCollection(collectionName);
-  });
-
+  // cascade delete all data
+  await User.deleteMany({});
   await insertTestData();
-  await db.disconnect();
 }
 
-async function reSeed() {
+async function seedTestAccounts() {
+  // cascade delete all test message/contact data
   await User.deleteMany({ isTest: true });
-  // this will cascade delete all test message/contact data
-
   await insertTestData();
 }
 
-module.exports = { seed, reSeed };
+module.exports = { seed, seedTestAccounts };

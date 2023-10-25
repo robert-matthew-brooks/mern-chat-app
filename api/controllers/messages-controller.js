@@ -1,12 +1,12 @@
 const messagesModel = require('../models/messages-model');
-const { getUserDataFromReq } = require('../util/token');
+const { getUserDataFromCookie } = require('../util/token');
 
 async function getMessages(req, res, next) {
   const { contact_id: contactId } = req.params;
+  const { limit } = req.query;
 
   try {
-    const { id } = await getUserDataFromReq(req);
-    console.log(id, contactId);
+    const { id } = await getUserDataFromCookie(req);
     const { messages } = await messagesModel.getMessages(id, contactId);
 
     res.status(200).send({ messages });
@@ -20,7 +20,7 @@ async function addMessage(req, res, next) {
   const { body } = req.body;
 
   try {
-    const { id } = await getUserDataFromReq(req);
+    const { id } = await getUserDataFromCookie(req);
     const { postedMessage } = await messagesModel.addMessage(
       id,
       contactId,

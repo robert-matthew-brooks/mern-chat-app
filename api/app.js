@@ -2,11 +2,11 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const { db, mongoUrl } = require('./db/connection');
+const { mongoose, mongoUrl } = require('./db/connection');
 const userController = require('./controllers/user-controller');
 const messagesController = require('./controllers/messages-controller');
 const errorHandlers = require('./error-handlers');
-const { reSeed } = require('./db/seed');
+const { seedTestAccounts } = require('./db/seed');
 
 // init
 
@@ -14,7 +14,7 @@ dotenv.config();
 const clientUrl = process.env.CLIENT_URL;
 let reseedTimeout;
 
-db.connect(mongoUrl);
+mongoose.connect(mongoUrl);
 const app = express();
 
 // middleware
@@ -27,13 +27,14 @@ app.use(
     origin: clientUrl,
   })
 );
+
 if (process.env.NODE_ENV !== 'test') {
+  // reseed test accounts if no activity for 10 mins
   app.use((_req, _res, next) => {
     clearTimeout(reseedTimeout);
 
     reseedTimeout = setTimeout(async () => {
-      console.log('reseed');
-      await reSeed();
+      await seedTestAccounts();
     }, 600000);
 
     next();
@@ -48,9 +49,9 @@ app.get('/status', (_req, res, _next) => {
 
 app.get('/user', userController.getProfile);
 app.post('/user', userController.register);
+app.delete('/user', userController.deleteUser);
 app.post('/login', userController.login);
 app.post('/logout', userController.logout);
-app.delete('/user', userController.deleteUser);
 app.get('/find/:term', userController.findUsers);
 app.post('/contacts/:contact_id', userController.addContact);
 app.delete('/contacts/:contact_id', userController.removeContact);

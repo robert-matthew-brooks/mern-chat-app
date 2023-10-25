@@ -11,7 +11,6 @@ function mongoErrorHandler(err, _req, res, next) {
 }
 
 function serverErrorHandler(err, _req, res, _next) {
-  console.error(err);
   res.status(500).send({ msg: `${err}` });
 }
 

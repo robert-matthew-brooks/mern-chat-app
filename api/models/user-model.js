@@ -2,25 +2,7 @@ const { User } = require('../db/connection');
 const { hash, isEncryptedMatch } = require('../util/encrypt');
 const { makeToken } = require('../util/token');
 
-async function register(username, password) {
-  const hashedPassword = hash(password);
-  const createdUser = await User.create({
-    username: username.toLowerCase(),
-    password: hashedPassword,
-  });
-  createdUser.contacts = [];
-
-  return {
-    registeredUser: {
-      id: createdUser._id,
-      username: createdUser.username,
-      contacts: createdUser.contacts,
-      token: makeToken(createdUser),
-    },
-  };
-}
-
-async function login(username, password) {
+const getUserDataWithContacts = async (username) => {
   const response = await User.aggregate([
     {
       $match: {
@@ -32,14 +14,42 @@ async function login(username, password) {
         from: 'users',
         localField: 'contactIds',
         foreignField: '_id',
-        pipeline: [{ $project: { _id: 1, username: 1 } }],
+        pipeline: [{ $project: { _id: 0, id: '$_id', username: 1 } }],
         as: 'contacts',
       },
     },
     { $project: { contactIds: 0 } },
   ]);
 
-  const foundUser = response[0];
+  return response[0];
+};
+
+async function register(username, password) {
+  const hashedPassword = hash(password);
+  const createdUser = await User.create({
+    username: username.toLowerCase(),
+    password: hashedPassword,
+  });
+
+  return {
+    registeredUser: {
+      id: createdUser._id,
+      username: createdUser.username,
+      token: makeToken(createdUser),
+    },
+  };
+}
+
+async function deleteUser(userId) {
+  const deletedInfo = await User.deleteOne({
+    _id: userId,
+  });
+
+  return { deletedInfo };
+}
+
+async function login(username, password) {
+  const foundUser = await getUserDataWithContacts(username);
 
   if (foundUser) {
     if (isEncryptedMatch(password, foundUser.password)) {
@@ -59,14 +69,6 @@ async function login(username, password) {
   }
 }
 
-async function deleteUser(userId) {
-  const deletedInfo = await User.deleteOne({
-    _id: userId,
-  });
-
-  return { deletedInfo };
-}
-
 async function findUsers(term, limit = 10) {
   const foundUsers = await User.aggregate([
     {
@@ -77,7 +79,8 @@ async function findUsers(term, limit = 10) {
     { $limit: +limit },
     {
       $project: {
-        _id: '$_id',
+        _id: 0,
+        id: '$_id',
         username: '$username',
       },
     },
@@ -95,7 +98,6 @@ async function addContact(userId, contactId) {
 }
 
 async function removeContact(userId, contactId) {
-  console.log('be', userId, contactId);
   const response = await User.updateOne(
     { _id: userId },
     { $pull: { contactIds: contactId } }
@@ -104,6 +106,7 @@ async function removeContact(userId, contactId) {
 }
 
 module.exports = {
+  getUserDataWithContacts,
   register,
   login,
   deleteUser,

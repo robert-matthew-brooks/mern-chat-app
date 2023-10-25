@@ -16,7 +16,7 @@ const makeToken = (user) => {
   );
 };
 
-async function getUserDataFromReq(req) {
+async function getUserDataFromCookie(req) {
   return new Promise((resolve, reject) => {
     const cookies = req.headers?.cookie;
     if (!cookies) reject({ msg: 'no cookie provided' });
@@ -30,4 +30,4 @@ async function getUserDataFromReq(req) {
   });
 }
 
-module.exports = { makeToken, getUserDataFromReq };
+module.exports = { makeToken, getUserDataFromCookie };

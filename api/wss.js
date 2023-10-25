@@ -1,5 +1,5 @@
 const ws = require('ws');
-const { getUserDataFromReq } = require('./util/token');
+const { getUserDataFromCookie } = require('./util/token');
 
 const broadcastClients = (wss) => {
   const clients = [...wss.clients];
@@ -20,7 +20,7 @@ function run(server) {
   const wss = new ws.WebSocketServer({ server });
 
   wss.on('connection', async (connection, req) => {
-    const { id, username } = await getUserDataFromReq(req);
+    const { id, username } = await getUserDataFromCookie(req);
     connection.id = id;
     connection.username = username;
     console.log(`${username} connected`);
