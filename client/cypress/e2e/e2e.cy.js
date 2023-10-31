@@ -70,7 +70,7 @@ describe('e2e tests', () => {
     cy.get('#Login__err-status').should('be.visible');
   });
 
-  it.only('adding a friend and receiving a message from them', () => {
+  it('adding a friend and receiving a message from them', () => {
     // create new account
     cy.register(f.new_username, f.new_password);
 
