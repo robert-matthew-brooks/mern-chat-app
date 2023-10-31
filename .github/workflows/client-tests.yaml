@@ -5,10 +5,6 @@ on:
     working-directory:
       - 'client/**'
 
-defaults:
-  run:
-    working-directory: client
-
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -20,13 +16,16 @@ jobs:
         uses: supercharge/mongodb-github-action@1.10.0
 
       - name: Install modules
-        run: npm install
+        run: |
+          npm --prefix api install
+          npm --prefix client install
 
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
-          project: ./
+          working-directory: client
           browser: chrome
-          build: npm build
-          start: npm dev
+          start: node ../api/listen, npm start
           wait-on: 'http://localhost:5173'
+        env:
+          JWT_SECRET: 'abcde12345'
