@@ -58,9 +58,9 @@ async function login(username, password) {
   const foundUser = await getUserDataWithContacts(username);
 
   if (!foundUser) {
-    return Promise.reject({ status: 401, msg: 'username not found' });
+    return Promise.reject({ status: 403, msg: 'username not found' });
   } else if (!isEncryptedMatch(password, foundUser.password)) {
-    return Promise.reject({ status: 403, msg: 'incorrect password' });
+    return Promise.reject({ status: 401, msg: 'incorrect password' });
   }
 
   return {

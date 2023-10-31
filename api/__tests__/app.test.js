@@ -202,7 +202,7 @@ describe('POST /login', () => {
         username: 'invalid',
         password,
       })
-      .expect(401);
+      .expect(403);
 
     expect(body.msg).toBeDefined();
   });
@@ -214,7 +214,7 @@ describe('POST /login', () => {
         username,
         password: 'invalid',
       })
-      .expect(403);
+      .expect(401);
 
     expect(body.msg).toBeDefined();
   });
