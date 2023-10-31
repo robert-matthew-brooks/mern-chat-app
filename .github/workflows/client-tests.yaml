@@ -27,7 +27,7 @@ jobs:
         with:
           working-directory: client
           browser: chrome
-          start: npm run dev
+          start: npx vite --host
           wait-on: 'http://localhost:5173'
         env:
           JWT_SECRET: 'abcde12345'
