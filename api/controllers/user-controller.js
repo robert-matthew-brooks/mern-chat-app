@@ -1,4 +1,3 @@
-const jwt = require('jsonwebtoken');
 const userModel = require('../models/user-model');
 const { getUserDataFromCookie } = require('../util/token');
 const { rejectIfNoTokenCookie } = require('../util/validate');
