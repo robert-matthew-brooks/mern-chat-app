@@ -4,7 +4,7 @@ const { rejectIfNoTokenCookie } = require('../util/validate');
 
 async function getMessages(req, res, next) {
   const { contact_id: contactId } = req.params;
-  const { limit } = req.query;
+  // const { limit } = req.query;
 
   try {
     await rejectIfNoTokenCookie(req);
