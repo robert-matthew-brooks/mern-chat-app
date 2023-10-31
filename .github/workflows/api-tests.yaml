@@ -13,11 +13,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Install modules
-        run: npm install
-
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.10.0
+
+      - name: Install modules
+        run: npm install
 
       - name: Run tests
         run: npm test

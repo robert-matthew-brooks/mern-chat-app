@@ -192,7 +192,7 @@ describe('POST /login', () => {
       })
       .expect(201);
 
-    expect(response.headers['set-cookie'][0]).toContain(token);
+    expect(response.headers['set-cookie'][0]).toContain('token=');
   });
 
   it('401: should return an error if username is invalid', async () => {
