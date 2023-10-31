@@ -23,11 +23,11 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
-          project: ./client
+          working-directory: client
           browser: chrome
           start: |
-            npm --prefix api listen
-            npm --prefix client start
+            npm --prefix ../api listen
+            npm  start
           wait-on: 'http://localhost:5173'
         env:
           JWT_SECRET: 'abcde12345'
