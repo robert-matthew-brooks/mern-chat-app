@@ -26,6 +26,6 @@ jobs:
           working-directory: client
           browser: chrome
           start: node ../api/listen, npm start
-          wait-on: 'http://localhost:6789, http://localhost:5173'
+          wait-on: 'http://localhost:5173'
         env:
           JWT_SECRET: 'abcde12345'
