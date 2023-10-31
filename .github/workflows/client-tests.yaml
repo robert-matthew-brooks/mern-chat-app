@@ -1,0 +1,32 @@
+name: client tests
+
+on:
+  push:
+    working-directory:
+      - 'client/**'
+
+defaults:
+  run:
+    working-directory: client
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+
+      - name: Install modules
+        run: npm install
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v3
+        with:
+          project: ./
+          browser: chrome
+          build: npm build
+          start: npm dev
+          wait-on: 'http://localhost:5173'

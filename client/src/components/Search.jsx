@@ -28,7 +28,7 @@ export default function Search() {
 
     const isAlreadyContact =
       contacts.filter((contact) => {
-        return userToAdd._id === contact.id;
+        return userToAdd.id === contact.id;
       }).length > 0;
 
     if (!isAlreadyContact) {

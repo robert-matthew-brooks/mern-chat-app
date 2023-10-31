@@ -1,25 +1,42 @@
-// ***********************************************
-// This example commands.js shows you how to
-// create various custom commands and overwrite
-// existing commands.
-//
-// For more comprehensive examples of custom
-// commands please read more here:
-// https://on.cypress.io/custom-commands
-// ***********************************************
-//
-//
-// -- This is a parent command --
-// Cypress.Commands.add('login', (email, password) => { ... })
-//
-//
-// -- This is a child command --
-// Cypress.Commands.add('drag', { prevSubject: 'element'}, (subject, options) => { ... })
-//
-//
-// -- This is a dual command --
-// Cypress.Commands.add('dismiss', { prevSubject: 'optional'}, (subject, options) => { ... })
-//
-//
-// -- This will overwrite an existing command --
-// Cypress.Commands.overwrite('visit', (originalFn, url, options) => { ... })
+Cypress.Commands.add('login', (username, password) => {
+  cy.get('#Login__username').clear().type(username);
+  cy.get('#Login__password').clear().type(password);
+  cy.get('input[type="submit"]').click();
+});
+
+Cypress.Commands.add('register', (username, password) => {
+  cy.get('#Login__username').clear().type(username);
+  cy.get('#Login__password').clear().type(password);
+  cy.get('input[type="button"]').click();
+});
+
+Cypress.Commands.add('logout', () => {
+  cy.get('#Nav__menu-btn').click();
+  cy.contains('button', 'Logout').click();
+});
+
+Cypress.Commands.add('deleteAccount', () => {
+  cy.get('#Nav__menu-btn').click();
+  cy.contains('button', 'Delete').click();
+});
+
+Cypress.Commands.add('clickContact', (which) => {
+  cy.get('.Contact').then(($contacts) => {
+    cy.get('.Contact')
+      .eq($contacts.length - which)
+      .click();
+  });
+});
+
+Cypress.Commands.add('addContact', (username) => {
+  cy.get('#Search__input').type(username);
+  cy.get('.Search__results__user').click();
+});
+
+Cypress.Commands.add('sendMsg', (msg) => {
+  cy.get('#Chat__form__input').type(`${msg}{enter}`);
+});
+
+Cypress.Commands.add('checkLatestMsg', (msg) => {
+  cy.get('.MsgBubble').first().should('contain.text', msg);
+});

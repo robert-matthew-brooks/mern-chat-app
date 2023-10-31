@@ -5,7 +5,6 @@ import './Contacts.css';
 
 export default function Contacts({ onlineUserIds }) {
   const { contacts, activeContact } = useContext(UserContext);
-  console.log('contacts', contacts);
 
   return (
     <aside className="Contacts">

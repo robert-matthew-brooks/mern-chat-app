@@ -60,7 +60,7 @@ export default function Login() {
         const registeredUser = await register(username, password);
         setUser(registeredUser);
       } catch (err) {
-        if (err?.response?.data?.code === '11000') {
+        if (err?.response?.status === 422) {
           setErrorMsg('Username already exists');
         } else {
           console.error(err);
@@ -76,10 +76,10 @@ export default function Login() {
         const foundUser = await login(username, password);
         setUser(foundUser);
       } catch (err) {
-        if (err?.response?.status === 401) {
-          setErrorMsg('Incorrect password');
-        } else if (err?.response?.status === 403) {
+        if (err?.response?.status === 403) {
           setErrorMsg('Username not found');
+        } else if (err?.response?.status === 401) {
+          setErrorMsg('Incorrect password');
         } else {
           console.error(err);
           throw err;
