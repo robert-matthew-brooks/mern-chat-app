@@ -1,6 +1,9 @@
 name: Run Jest test on push
 
-on: [push]
+on:
+  push:
+    paths:
+      - 'api/**'
 
 defaults:
   run:
