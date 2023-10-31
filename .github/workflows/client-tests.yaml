@@ -22,8 +22,12 @@ jobs:
       - name: Install modules
         run: npm install
 
-      - name: Start client app
-        run: npx vite --host
-
-      - name: Run tests
-        run: npm test
+      - name: Cypress run
+        uses: cypress-io/github-action@v3
+        with:
+          project: ./client
+          browser: chrome
+          start: npx vite --host
+          wait-on: 'http://localhost:5173'
+        env:
+          JWT_SECRET: 'abcde12345'
