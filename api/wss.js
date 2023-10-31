@@ -23,7 +23,6 @@ function run(server) {
     const { id, username } = await getUserDataFromCookie(req);
     connection.id = id;
     connection.username = username;
-    console.log(`${username} connected`);
 
     // send all connected clients the connected client list
     broadcastClients(wss);
@@ -35,7 +34,6 @@ function run(server) {
         // kill connection
         clearInterval(connection.pingTimer);
         connection.terminate();
-        console.log(`${username} timed out`);
 
         // send everyone the new client list
         broadcastClients(wss);
