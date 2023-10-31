@@ -1,5 +1,4 @@
 const express = require('express');
-const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { mongoose, mongoUrl } = require('./db/connection');
@@ -10,8 +9,7 @@ const { seedTestAccounts } = require('./db/seed');
 
 // init
 
-dotenv.config();
-const clientUrl = process.env.CLIENT_URL;
+const clientUrl = 'http://localhost:5173';
 let reseedTimeout;
 
 mongoose.connect(mongoUrl);
