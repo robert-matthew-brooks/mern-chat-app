@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from 'react';
-import * as api from './js/api';
+import { getProfileFromCookie } from './js/api';
 
 export const UserContext = createContext({});
 
@@ -16,14 +16,14 @@ export function UserContextProvider({ children }) {
 
     setId(user.id);
     setUsername(user.username);
-    setContacts(user.contacts);
+    if (user.contacts) setContacts(user.contacts);
     setActiveContact(null);
   }
 
   useEffect(() => {
     (async () => {
       try {
-        const userData = await api.getProfileFromCookie();
+        const userData = await getProfileFromCookie();
         setUser(userData);
       } catch (err) {
         if (err?.response?.status === 401) {

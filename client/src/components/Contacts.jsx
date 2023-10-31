@@ -3,8 +3,9 @@ import { UserContext } from '../UserContext';
 import Contact from './Contact';
 import './Contacts.css';
 
-export default function Sidebar({ onlineUserIds }) {
+export default function Contacts({ onlineUserIds }) {
   const { contacts, activeContact } = useContext(UserContext);
+  console.log('contacts', contacts);
 
   return (
     <aside className="Contacts">
@@ -14,7 +15,7 @@ export default function Sidebar({ onlineUserIds }) {
             <Contact
               key={i}
               contact={contact}
-              isOnline={onlineUserIds.includes(contact._id)}
+              isOnline={onlineUserIds.includes(contact.id)}
               isActive={contact.username === activeContact?.username}
             />
           );

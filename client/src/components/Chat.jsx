@@ -27,7 +27,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
   const getAllMessages = () => {
     const filteredWsMessages = wsMessages.filter((msg) => {
-      return msg.senderId === activeContact._id;
+      return msg.senderId === activeContact.id;
     });
 
     return [...filteredWsMessages, ...messages];
@@ -41,7 +41,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
       const newMessage = {
         senderId: id,
-        recipientId: activeContact._id,
+        recipientId: activeContact.id,
         body: message,
         createdAt: new Date().toISOString(),
       };
@@ -54,7 +54,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
       // update backend server
       try {
-        await addMessage(activeContact._id, message);
+        await addMessage(activeContact.id, message);
       } catch (err) {
         console.error(err);
       }
@@ -70,7 +70,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
     (async () => {
       try {
         if (activeContact) {
-          const { messages } = await getMessages(activeContact?._id);
+          const { messages } = await getMessages(activeContact?.id);
           setMessages(messages);
           updateTip(messages);
         } else {

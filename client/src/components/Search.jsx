@@ -28,12 +28,12 @@ export default function Search() {
 
     const isAlreadyContact =
       contacts.filter((contact) => {
-        return userToAdd._id === contact._id;
+        return userToAdd._id === contact.id;
       }).length > 0;
 
     if (!isAlreadyContact) {
-      await addContact(userToAdd._id);
-      setContacts([userToAdd, ...contacts]);
+      await addContact(userToAdd.id);
+      setContacts([...contacts, userToAdd]);
     }
 
     setActiveContact(userToAdd);
