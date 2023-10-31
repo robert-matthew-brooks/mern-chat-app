@@ -25,9 +25,7 @@ jobs:
         with:
           working-directory: client
           browser: chrome
-          start: |
-            npm --prefix ../api listen
-            npm  start
+          start: npm --prefix ../api listen, npm  start
           wait-on: 'http://localhost:5173'
         env:
           JWT_SECRET: 'abcde12345'
