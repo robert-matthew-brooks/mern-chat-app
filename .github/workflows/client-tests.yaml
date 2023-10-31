@@ -15,18 +15,19 @@ jobs:
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.10.0
 
-      - name: Install client modules
-        run: npm --prefix client install
-
-      - name: Install api modules
-        run: npm --prefix api install
+      - name: Install modules
+        run: |
+          npm --prefix api install
+          npm --prefix client install
 
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
-          working-directory: client
+          project: ./client
           browser: chrome
-          start: npm start
+          start: |
+            npm --prefix api listen
+            npm --prefix client start
           wait-on: 'http://localhost:5173'
         env:
           JWT_SECRET: 'abcde12345'
