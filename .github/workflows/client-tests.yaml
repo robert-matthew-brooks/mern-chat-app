@@ -22,5 +22,8 @@ jobs:
       - name: Install modules
         run: npm install
 
+      - name: Start client app
+        run: npm run dev
+
       - name: Run tests
         run: npm test
