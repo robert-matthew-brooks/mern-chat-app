@@ -25,9 +25,9 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v3
         with:
-          project: ./client
+          working-directory: client
           browser: chrome
-          start: npx vite --host
+          start: npm run dev
           wait-on: 'http://localhost:5173'
         env:
           JWT_SECRET: 'abcde12345'
