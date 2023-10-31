@@ -2,7 +2,6 @@ name: Run Jest test on push
 
 on: [push]
 
-
 defaults:
   run:
     working-directory: api
@@ -17,6 +16,10 @@ jobs:
       - name: Install modules
         run: npm install
 
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.10.0
+
       - name: Run tests
         run: npm test
-
+        env:
+          JWT_SECRET: 'abcde12345'
