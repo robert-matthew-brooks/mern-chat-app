@@ -59,9 +59,7 @@ async function login(username, password) {
 
   if (!foundUser) {
     return Promise.reject({ status: 401, msg: 'username not found' });
-  }
-
-  if (!isEncryptedMatch(password, foundUser.password)) {
+  } else if (!isEncryptedMatch(password, foundUser.password)) {
     return Promise.reject({ status: 403, msg: 'incorrect password' });
   }
 
