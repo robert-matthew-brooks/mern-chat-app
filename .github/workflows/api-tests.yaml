@@ -2,8 +2,13 @@ name: Run Jest test on push
 
 on: [push]
 
+
+defaults:
+  run:
+    working-directory: api
+
 jobs:
-  install:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -14,3 +19,4 @@ jobs:
 
       - name: Run tests
         run: npm test
+
