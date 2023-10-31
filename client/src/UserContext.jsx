@@ -26,10 +26,9 @@ export function UserContextProvider({ children }) {
         const userData = await getProfileFromCookie();
         setUser(userData);
       } catch (err) {
-        if (err?.response?.status === 401) {
-          console.log('401: no cookie token found');
+        if (err?.response?.status === 403) {
+          console.log('403: no cookie token found or invalid token');
         } else {
-          console.error(err);
           throw err;
         }
       }
