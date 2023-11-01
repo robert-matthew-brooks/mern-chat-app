@@ -5,6 +5,11 @@ const api = axios.create({
   withCredentials: true,
 });
 
+export async function pingServer() {
+  const response = await api.get('/status');
+  return response;
+}
+
 export async function getProfileFromCookie() {
   const { data } = await api.get('/user');
   return data.user_data;

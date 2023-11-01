@@ -1,6 +1,7 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
 import { UserContext } from '../UserContext';
-import { register, login } from '../js/api';
+import { register, login, pingServer } from '../js/api';
+import LoadingImg from '../assets/loading.svg';
 import './Login.css';
 
 export default function Login() {
@@ -8,6 +9,10 @@ export default function Login() {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
   const { setUser } = useContext(UserContext);
+
+  const [isServerUp, setIsServerUp] = useState(false);
+  const [isLoadingLogin, setIsLoadingLogin] = useState(false);
+  const [isLoadingRegister, setIsLoadingRegister] = useState(false);
 
   const autofill = () => {
     setUsername('bob_test');
@@ -56,6 +61,8 @@ export default function Login() {
 
   const handleRegister = async () => {
     if (validateUsername() && validatePassword()) {
+      setIsLoadingRegister(true);
+
       try {
         const registeredUser = await register(username, password);
         setUser(registeredUser);
@@ -67,11 +74,15 @@ export default function Login() {
           throw err;
         }
       }
+
+      setIsLoadingRegister(false);
     }
   };
 
   const handleLogin = async () => {
     if (validateUsername() && validatePassword()) {
+      setIsLoadingLogin(true);
+
       try {
         const foundUser = await login(username, password);
         setUser(foundUser);
@@ -85,8 +96,19 @@ export default function Login() {
           throw err;
         }
       }
+
+      setIsLoadingLogin(false);
     }
   };
+
+  useEffect(() => {
+    (async () => {
+      const response = await pingServer();
+      if (response?.status === 200) {
+        setIsServerUp(true);
+      }
+    })();
+  }, []);
 
   return (
     <div id="Login">
@@ -118,8 +140,19 @@ export default function Login() {
         />
 
         <div id="Login__btn-wrapper">
-          <input type="button" value="Register" onClick={handleRegister} />
-          <input type="submit" value="Login" onClick={handleLogin} />
+          <button
+            disabled={isLoadingRegister || isLoadingLogin ? true : false}
+            onClick={handleRegister}
+          >
+            {isLoadingRegister ? <img src={LoadingImg} /> : 'Register'}
+          </button>
+          <button
+            type="submit"
+            disabled={isLoadingRegister || isLoadingLogin ? true : false}
+            onClick={handleLogin}
+          >
+            {isLoadingLogin ? <img src={LoadingImg} /> : 'Login'}
+          </button>
         </div>
 
         <p
@@ -135,12 +168,25 @@ export default function Login() {
         <br />
         (Click to autofill)
         <br />
-        <br />
         <button onClick={autofill}>
           bob_test
           <br />
           testpass1
         </button>
+        <br />
+        <br />
+        Server status:
+        <br />
+        <span
+          id="Login__guide__status"
+          className={
+            isServerUp
+              ? 'Login__guide__status--online'
+              : 'Login__guide__status--offline'
+          }
+        >
+          {isServerUp ? 'Online' : 'Starting...'}
+        </span>
       </p>
     </div>
   );
