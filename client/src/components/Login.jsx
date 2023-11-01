@@ -80,9 +80,9 @@ export default function Login() {
   };
 
   const handleLogin = async () => {
-    if (validateUsername() && validatePassword()) {
-      setIsLoginLoading(true);
+    setIsLoginLoading(true);
 
+    if (validateUsername() && validatePassword()) {
       try {
         const foundUser = await login(username, password);
         setUser(foundUser);
@@ -96,9 +96,8 @@ export default function Login() {
           console.error(err);
         }
       }
-
-      setIsLoginLoading(false);
     }
+    setIsLoginLoading(false);
   };
 
   useEffect(() => {
