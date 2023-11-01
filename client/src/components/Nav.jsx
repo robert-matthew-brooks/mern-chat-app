@@ -54,8 +54,8 @@ export default function Nav({ ws }) {
 
       <div id="Nav__user-menu" style={{ top: !isMenuVisible && '0' }}>
         <p>{username}</p>
-        <button onClick={handleDeleteAccount}>Delete Account</button>{' '}
-        <button onClick={handleLogout}>Logout</button>{' '}
+        <button onClick={handleDeleteAccount}>Delete Account</button>
+        <button onClick={handleLogout}>Logout</button>
       </div>
       <div
         id="Nav__hide-menu-layer"

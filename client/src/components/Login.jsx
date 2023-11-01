@@ -11,8 +11,8 @@ export default function Login() {
   const { setUser } = useContext(UserContext);
 
   const [isServerUp, setIsServerUp] = useState(false);
-  const [isLoadingLogin, setIsLoadingLogin] = useState(false);
-  const [isLoadingRegister, setIsLoadingRegister] = useState(false);
+  const [isLoginLoading, setIsLoginLoading] = useState(false);
+  const [isRegisterLoading, setIsRegisterLoading] = useState(false);
 
   const autofill = () => {
     setUsername('bob_test');
@@ -61,7 +61,7 @@ export default function Login() {
 
   const handleRegister = async () => {
     if (validateUsername() && validatePassword()) {
-      setIsLoadingRegister(true);
+      setIsRegisterLoading(true);
 
       try {
         const registeredUser = await register(username, password);
@@ -70,18 +70,18 @@ export default function Login() {
         if (err?.response?.status === 422) {
           setErrorMsg('Username already exists');
         } else {
+          setErrorMsg('Server error... please try again later');
           console.error(err);
-          throw err;
         }
       }
 
-      setIsLoadingRegister(false);
+      setIsRegisterLoading(false);
     }
   };
 
   const handleLogin = async () => {
     if (validateUsername() && validatePassword()) {
-      setIsLoadingLogin(true);
+      setIsLoginLoading(true);
 
       try {
         const foundUser = await login(username, password);
@@ -92,12 +92,12 @@ export default function Login() {
         } else if (err?.response?.status === 401) {
           setErrorMsg('Incorrect password');
         } else {
+          setErrorMsg('Server error... please try again later');
           console.error(err);
-          throw err;
         }
       }
 
-      setIsLoadingLogin(false);
+      setIsLoginLoading(false);
     }
   };
 
@@ -141,17 +141,17 @@ export default function Login() {
 
         <div id="Login__btn-wrapper">
           <button
-            disabled={isLoadingRegister || isLoadingLogin ? true : false}
+            disabled={isRegisterLoading || isLoginLoading ? true : false}
             onClick={handleRegister}
           >
-            {isLoadingRegister ? <img src={LoadingImg} /> : 'Register'}
+            {isRegisterLoading ? <img src={LoadingImg} /> : 'Register'}
           </button>
           <button
             type="submit"
-            disabled={isLoadingRegister || isLoadingLogin ? true : false}
+            disabled={isRegisterLoading || isLoginLoading ? true : false}
             onClick={handleLogin}
           >
-            {isLoadingLogin ? <img src={LoadingImg} /> : 'Login'}
+            {isLoginLoading ? <img src={LoadingImg} /> : 'Login'}
           </button>
         </div>
 

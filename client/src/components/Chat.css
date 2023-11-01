@@ -7,6 +7,18 @@
   justify-content: flex-end;
   background-color: var(--chat-bg-colour);
 }
+#Chat--error {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background-color: var(--chat-bg-colour);
+}
+#Chat--error > button {
+  padding: 0.3rem;
+  cursor: pointer;
+}
 
 #Chat__tip {
   flex: 1;
