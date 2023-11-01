@@ -1,13 +1,13 @@
 Cypress.Commands.add('login', (username, password) => {
   cy.get('#Login__username').clear().type(username);
   cy.get('#Login__password').clear().type(password);
-  cy.get('input[type="submit"]').click();
+  cy.contains('button', 'Login').click();
 });
 
 Cypress.Commands.add('register', (username, password) => {
   cy.get('#Login__username').clear().type(username);
   cy.get('#Login__password').clear().type(password);
-  cy.get('input[type="button"]').click();
+  cy.contains('button', 'Register').click();
 });
 
 Cypress.Commands.add('logout', () => {
