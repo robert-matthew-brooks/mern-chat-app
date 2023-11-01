@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../UserContext';
+import Loading from './Loading';
 import Message from './Message';
 import { getMessages, addMessage } from '../js/api';
 import './Chat.css';
-import Loading from './Loading';
 
 export default function Chat({ ws, wsMessages, setWsMessages }) {
   const { id, activeContact, setActiveContact, contacts } =

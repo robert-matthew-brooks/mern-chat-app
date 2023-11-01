@@ -1,5 +1,6 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../UserContext';
+import Loading from './Loading';
 import ClearBtn from './ClearBtn';
 import { findUsers, addContact } from '../js/api';
 import './Search.css';
@@ -9,6 +10,7 @@ export default function Search() {
     useContext(UserContext);
   const [searchStr, setSearchStr] = useState('');
   const [foundUsers, setFoundUsers] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleSearchChange = async (searchStr) => {
     setSearchStr(searchStr);
@@ -17,8 +19,10 @@ export default function Search() {
       if (!/^[\w\d]+$/i.test(searchStr)) {
         setFoundUsers([]);
       } else {
+        setIsLoading(true);
         const { found_users: foundUsers } = await findUsers(searchStr, 10);
         setFoundUsers(foundUsers.filter((user) => user.username !== username));
+        setIsLoading(false);
       }
     }
   };
@@ -63,26 +67,28 @@ export default function Search() {
         id="Search__results"
         style={{ display: searchStr.length > 0 ? 'block' : 'none' }}
       >
-        <div
-          id="Search__results__no-results"
-          style={{ display: foundUsers.length ? 'none' : 'block' }}
-        >
-          [No results]
-        </div>
+        <Loading isLoading={isLoading}>
+          <div
+            id="Search__results__no-results"
+            style={{ display: foundUsers.length ? 'none' : 'block' }}
+          >
+            [No results]
+          </div>
 
-        {foundUsers.map((user, i) => {
-          return (
-            <div
-              key={i}
-              className="Search__results__user"
-              onClick={() => {
-                handleSearchResultClick(user);
-              }}
-            >
-              {user.username}
-            </div>
-          );
-        })}
+          {foundUsers.map((user, i) => {
+            return (
+              <div
+                key={i}
+                className="Search__results__user"
+                onClick={() => {
+                  handleSearchResultClick(user);
+                }}
+              >
+                {user.username}
+              </div>
+            );
+          })}
+        </Loading>
       </div>
     </div>
   );

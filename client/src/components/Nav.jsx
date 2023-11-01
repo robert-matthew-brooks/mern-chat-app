@@ -1,6 +1,7 @@
 import { useContext, useState } from 'react';
 import { UserContext } from '../UserContext';
 import { logout, deleteUser } from '../js/api';
+import Loading from './Loading';
 import Search from './Search';
 import megaphoneImg from '../assets/megaphone.svg';
 import './Nav.css';
@@ -9,19 +10,26 @@ export default function Nav({ ws }) {
   const { username, setUser } = useContext(UserContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
+  const [isDeleteLoading, setIsDeleteLoading] = useState(false);
+  const [isLogoutLoading, setIsLogoutLoading] = useState(false);
+
   const toggleMenu = () => {
     setIsMenuVisible(!isMenuVisible);
   };
 
   const handleLogout = async () => {
+    setIsLogoutLoading(true);
     await logout();
     ws.close();
+    setIsLogoutLoading(false);
     setUser(null);
   };
 
   const handleDeleteAccount = async () => {
+    setIsDeleteLoading(true);
     await deleteUser();
     ws.close();
+    setIsDeleteLoading(false);
     setUser(null);
   };
 
@@ -54,8 +62,19 @@ export default function Nav({ ws }) {
 
       <div id="Nav__user-menu" style={{ top: !isMenuVisible && '0' }}>
         <p>{username}</p>
-        <button onClick={handleDeleteAccount}>Delete Account</button>
-        <button onClick={handleLogout}>Logout</button>
+        <button
+          onClick={handleDeleteAccount}
+          disabled={isDeleteLoading || isLogoutLoading}
+        >
+          <Loading isLoading={isDeleteLoading}>Delete Account</Loading>
+        </button>
+
+        <button
+          onClick={handleLogout}
+          disabled={isDeleteLoading || isLogoutLoading}
+        >
+          <Loading isLoading={isLogoutLoading}>Logout</Loading>
+        </button>
       </div>
       <div
         id="Nav__hide-menu-layer"

@@ -5,7 +5,7 @@ export default function Loading({ isLoading, children }) {
   return (
     <>
       <div className="Loading" style={{ display: !isLoading && 'none' }}>
-        {<img src={LoadingImg} />}
+        <img src={LoadingImg} />
       </div>
       {children}
     </>

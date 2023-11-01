@@ -51,8 +51,16 @@
   background-color: var(--menu-bg-colour);
   transition: 0.5s top;
 }
-#Nav__user-menu > p {
+#Nav__user-menu > * {
+  position: relative;
+  height: 2.5rem;
   padding: 0 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#Nav__user-menu #Nav__user-menu > p {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,7 +69,6 @@
 }
 
 #Nav__user-menu > button {
-  padding: 0.6rem 1rem;
   background-color: transparent;
   border: none;
   border-left: 1px solid var(--menu-separator-colour);
