@@ -27,7 +27,7 @@
   filter: invert(100%);
 }
 
-#Nav__menu-btn {
+#Nav > button {
   height: 80%;
   aspect-ratio: 1;
   color: var(--text-light);
@@ -36,7 +36,7 @@
   border-radius: 0.5rem;
   cursor: pointer;
 }
-#Nav__menu-btn:hover {
+#Nav > button:hover {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -87,4 +87,10 @@
   background-color: black;
   opacity: 0;
   transition: 0.5s opacity;
+}
+
+@media (min-width: 601px) {
+  #Nav__back-btn {
+    display: none !important;
+  }
 }

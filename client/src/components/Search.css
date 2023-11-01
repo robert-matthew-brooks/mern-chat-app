@@ -7,6 +7,8 @@
 }
 
 #Search__input {
+  height: 100%;
+  width: 12rem;
   padding: 0.2rem;
   background-color: transparent;
   border: none;
@@ -35,4 +37,16 @@
 
 #Search__results__no-results {
   color: grey;
+}
+
+@media (min-width: 601px) {
+  #Search {
+    display: flex !important;
+  }
+}
+
+@media (max-width: 600px) {
+  #Search__input {
+    width: 8rem;
+  }
 }

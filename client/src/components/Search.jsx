@@ -6,7 +6,7 @@ import { findUsers, addContact } from '../js/api';
 import './Search.css';
 
 export default function Search() {
-  const { id, username, contacts, setContacts, setActiveContact } =
+  const { username, contacts, setContacts, activeContact, setActiveContact } =
     useContext(UserContext);
   const [searchStr, setSearchStr] = useState('');
   const [foundUsers, setFoundUsers] = useState([]);
@@ -44,7 +44,7 @@ export default function Search() {
   };
 
   return (
-    <div id="Search">
+    <div id="Search" style={{ display: activeContact && 'none' }}>
       <input
         id="Search__input"
         value={searchStr}

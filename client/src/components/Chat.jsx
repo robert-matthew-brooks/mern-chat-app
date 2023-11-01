@@ -81,6 +81,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
           setMessages(messages);
           updateTip(messages);
         } else {
+          setMessages([]);
           updateTip();
         }
       } catch (err) {

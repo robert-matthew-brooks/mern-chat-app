@@ -124,3 +124,16 @@
 .Login__guide__status--online::before {
   color: green;
 }
+
+@media (max-width: 600px) {
+  #Login {
+    flex-direction: column;
+  }
+
+  #Login__guide {
+    width: 18rem;
+    padding: 1rem;
+    background-color: #f0f0f0;
+    border: 1px dashed grey;
+  }
+}

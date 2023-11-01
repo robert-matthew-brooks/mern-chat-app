@@ -7,3 +7,13 @@
     'nav nav'
     'sidebar chat';
 }
+
+@media (max-width: 600px) {
+  .Main--mobile-contacts {
+    grid-template-columns: 1fr 0rem !important;
+  }
+
+  .Main--mobile-chat {
+    grid-template-columns: 0rem 1fr !important;
+  }
+}

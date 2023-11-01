@@ -1,10 +1,12 @@
-import { useEffect, useState, useRef } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { UserContext } from '../UserContext';
 import Nav from './Nav';
 import Contacts from './Contacts';
 import Chat from './Chat';
 import './Main.css';
 
 export default function Main() {
+  const { activeContact } = useContext(UserContext);
   const [ws, setWs] = useState(null);
   const [wsMsgBuffer, setWsMsgBuffer] = useState(null);
   const [wsMessages, setWsMessages] = useState([]);
@@ -38,7 +40,10 @@ export default function Main() {
   }, [wsMsgBuffer]);
 
   return (
-    <div id="Main">
+    <div
+      id="Main"
+      className={activeContact ? 'Main--mobile-chat' : 'Main--mobile-contacts'}
+    >
       <Nav ws={ws} />
       <Contacts onlineUserIds={onlineUserIds} />
       <Chat ws={ws} wsMessages={wsMessages} setWsMessages={setWsMessages} />

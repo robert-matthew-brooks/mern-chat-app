@@ -1,5 +1,6 @@
 #Chat {
   grid-area: chat;
+  overflow: hidden;
   position: relative;
   max-height: calc(100vh - var(--nav-height));
   display: flex;

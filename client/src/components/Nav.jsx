@@ -7,7 +7,8 @@ import megaphoneImg from '../assets/megaphone.svg';
 import './Nav.css';
 
 export default function Nav({ ws }) {
-  const { username, setUser } = useContext(UserContext);
+  const { username, setUser, activeContact, setActiveContact } =
+    useContext(UserContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
@@ -41,6 +42,29 @@ export default function Nav({ ws }) {
           Bob Chat
         </p>
         <Search />
+
+        <button
+          id="Nav__back-btn"
+          style={{ display: !activeContact && 'none' }}
+          onClick={() => {
+            setActiveContact(null);
+          }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={1.5}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3"
+            />
+          </svg>
+        </button>
 
         <button id="Nav__menu-btn" onClick={toggleMenu}>
           <svg
