@@ -304,7 +304,7 @@ describe('POST /contacts/:contact_id', () => {
 });
 
 describe('DELETE /contacts/:contact_id', () => {
-  it('200: should remove the contact to the user data', async () => {
+  it('200: should remove the contact from the user data', async () => {
     await request(app)
       .delete(`/contacts/${friendId}`)
       .set('Cookie', `token=${token}`)

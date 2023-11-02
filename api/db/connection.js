@@ -1,6 +1,8 @@
 const mongoose = require('mongoose');
+const dotenv = require('dotenv');
 
-const mongoUrl = 'mongodb://127.0.0.1:27017/bobchat';
+dotenv.config();
+const mongoUrl = process.env.DB_URL || 'mongodb://127.0.0.1:27017/bobchat';
 
 const UserSchema = new mongoose.Schema(
   {
