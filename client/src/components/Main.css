@@ -1,5 +1,5 @@
 #Main {
-  height: 100vh;
+  height: 100dvh;
   display: grid;
   grid-template-rows: min-content 1fr;
   grid-template-columns: 15rem 1fr;
