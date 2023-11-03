@@ -1,6 +1,7 @@
 {
   "scripts": {
     "seed": "node db/seed-run.js",
+    "seed-test": "node db/seed-test-run.js",
     "listen": "nodemon listen.js",
     "test": "jest --runInBand"
   },

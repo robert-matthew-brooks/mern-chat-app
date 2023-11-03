@@ -20,7 +20,7 @@ async function register(req, res, next) {
 
     res
       .status(201)
-      .cookie('token', registeredUser.token)
+      .cookie('token', registeredUser.token, { secure: true, sameSite: 'none' })
 
       .send({ registered_user: registeredUser });
   } catch (err) {
