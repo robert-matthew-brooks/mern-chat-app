@@ -2,7 +2,7 @@
 
 #Login {
   width: 100%;
-  height: var(--full-screen-height);
+  min-height: var(--full-screen-height);
   display: flex;
   flex-direction: row;
   justify-content: center;
