@@ -20,6 +20,7 @@ const app = express();
 
 // middleware
 
+app.set('trust proxy', 1);
 app.use(express.json());
 app.set('json spaces', 2);
 app.use(cookieParser());
