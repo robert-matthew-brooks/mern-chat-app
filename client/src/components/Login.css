@@ -115,6 +115,7 @@
   content: '●';
   margin-right: 0.5rem;
   font-size: 1.8rem;
+  font-style: normal;
 }
 
 .Login__guide__status--offline::before {
