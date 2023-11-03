@@ -10,11 +10,13 @@ export default function Nav({ ws }) {
   const { token, username, setUser, activeContact, setActiveContact } =
     useContext(UserContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
+  const [searchStr, setSearchStr] = useState('');
 
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
   const [isLogoutLoading, setIsLogoutLoading] = useState(false);
 
   const toggleMenu = () => {
+    setSearchStr('');
     setIsMenuVisible(!isMenuVisible);
   };
 
@@ -41,7 +43,11 @@ export default function Nav({ ws }) {
           <img src={megaphoneImg} />
           Bob Chat
         </p>
-        <Search />
+        <Search
+          searchStr={searchStr}
+          setSearchStr={setSearchStr}
+          setIsMenuVisible={setIsMenuVisible}
+        />
 
         <button
           id="Nav__back-btn"

@@ -5,7 +5,7 @@ import ClearBtn from './ClearBtn';
 import { findUsers, addContact } from '../js/api';
 import './Search.css';
 
-export default function Search() {
+export default function Search({ searchStr, setSearchStr, setIsMenuVisible }) {
   const {
     token,
     username,
@@ -14,11 +14,11 @@ export default function Search() {
     activeContact,
     setActiveContact,
   } = useContext(UserContext);
-  const [searchStr, setSearchStr] = useState('');
   const [foundUsers, setFoundUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSearchChange = async (searchStr) => {
+    setIsMenuVisible(false);
     setSearchStr(searchStr);
 
     if (searchStr) {
