@@ -1,4 +1,5 @@
 const express = require('express');
+const dotenv = require('dotenv');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { mongoose, mongoUrl } = require('./db/connection');
@@ -9,10 +10,8 @@ const { seedTestAccounts } = require('./db/seed');
 
 // init
 
-const clientUrls = [
-  'https://fe-mern-chat-app.onrender.com',
-  'http://localhost:5173',
-];
+dotenv.config();
+const clientUrl = process.env.FE_URL;
 let reseedTimeout;
 
 mongoose.connect(mongoUrl);
@@ -27,7 +26,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: clientUrls,
+    origin: clientUrl,
   })
 );
 
