@@ -82,7 +82,7 @@
 #Nav__hide-menu-layer {
   position: absolute;
   width: 100vw;
-  height: 100vh;
+  height: var(--full-screen-height);
   z-index: 7;
   background-color: black;
   opacity: 0;

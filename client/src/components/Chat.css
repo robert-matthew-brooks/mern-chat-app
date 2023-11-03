@@ -2,7 +2,7 @@
   grid-area: chat;
   overflow: hidden;
   position: relative;
-  max-height: calc(100vh - var(--nav-height));
+  max-height: calc(var(--full-screen-height) - var(--nav-height));
   display: flex;
   flex-direction: column;
   justify-content: flex-end;

@@ -1,11 +1,10 @@
 :root {
   --full-screen-height: 100vh;
-  --full-screen-max-height: 100vh;
   --nav-height: 3rem;
 }
 
 @media (max-width: 600px) {
   :root {
-    --full-screen-max-height: -webkit-fill-available;
+    --full-screen-max-height: 100dvh;
   }
 }

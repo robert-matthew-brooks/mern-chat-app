@@ -1,6 +1,5 @@
 #Main {
   height: var(--full-screen-height);
-  max-height: var(--full-screen-max-height);
   display: grid;
   grid-template-rows: min-content 1fr;
   grid-template-columns: 15rem 1fr;
