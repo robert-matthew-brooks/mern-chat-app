@@ -1,4 +1,4 @@
-name: client tests
+name: Client tests / Cypress
 
 on:
   push:
