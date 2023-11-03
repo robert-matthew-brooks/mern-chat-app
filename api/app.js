@@ -11,7 +11,7 @@ const { seedTestAccounts } = require('./db/seed');
 // init
 
 dotenv.config();
-const clientUrl = process.env.FE_URL;
+const clientUrl = process.env.FE_URL || 'http://localhost:5173';
 let reseedTimeout;
 
 mongoose.connect(mongoUrl);
