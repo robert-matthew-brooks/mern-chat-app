@@ -15,7 +15,7 @@ export default function Main() {
   useEffect(() => {
     const wss =
       process.env.NODE_ENV === 'production'
-        ? 'ws://be-mern-chat-app.onrender.com'
+        ? 'wss://be-mern-chat-app.onrender.com'
         : 'ws://localhost:9090';
 
     const ws = new WebSocket(wss);
