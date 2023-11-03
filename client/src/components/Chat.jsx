@@ -31,10 +31,14 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
   const getAllMessages = () => {
     const filteredWsMessages = wsMessages.filter((msg) => {
-      return msg.senderId === activeContact.id;
+      return msg.senderId === activeContact?.id;
     });
 
-    return [...filteredWsMessages, ...messages];
+    const allMessages = [...filteredWsMessages, ...messages].sort((a, b) => {
+      return new Date(b.createdAt) - new Date(a.createdAt);
+    });
+
+    return allMessages;
   };
 
   const handleSubmit = async (evt) => {
@@ -52,6 +56,8 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
       // update local (optimistic)
       setMessages([newMessage, ...messages]);
+      setMessage('');
+      messagesBox.scrollTop = messagesBox.scrollHeight;
 
       // send message to websocket
       ws.send(JSON.stringify(newMessage));
@@ -62,9 +68,6 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
       } catch (err) {
         console.error(err);
       }
-
-      setMessage('');
-      messagesBox.scrollTop = messagesBox.scrollHeight;
     }
   };
 
@@ -111,12 +114,15 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
     return (
       <div id="Chat">
         <Loading isLoading={isLoading}>
-          <div id="Chat__tip" style={{ display: !tip && 'none' }}>
+          <div
+            id="Chat__tip"
+            style={{ display: getAllMessages().length > 0 && 'none' }}
+          >
             {tip}
           </div>
           <div
             id="Chat__messages"
-            style={{ display: !messages.length && 'none' }}
+            style={{ display: !getAllMessages().length && 'none' }}
           >
             {getAllMessages().map((message, i) => {
               return <Message key={i} message={message} />;
