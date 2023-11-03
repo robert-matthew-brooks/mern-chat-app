@@ -9,7 +9,10 @@ const { seedTestAccounts } = require('./db/seed');
 
 // init
 
-const clientUrl = 'http://localhost:5173';
+const clientUrls = [
+  'https://fe-mern-chat-app.netlify.app/',
+  'http://localhost:5173',
+];
 let reseedTimeout;
 
 mongoose.connect(mongoUrl);
@@ -22,7 +25,7 @@ app.use(cookieParser());
 app.use(
   cors({
     credentials: true,
-    origin: clientUrl,
+    origin: clientUrls,
   })
 );
 
