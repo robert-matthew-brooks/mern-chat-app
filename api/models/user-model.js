@@ -100,7 +100,6 @@ async function addContact(userId, contactId) {
     { _id: userId },
     { $addToSet: { contactIds: contactId } }
   );
-  console.log('added', response);
   return { response };
 }
 

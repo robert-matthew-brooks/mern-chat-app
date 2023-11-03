@@ -43,7 +43,7 @@ export async function findUsers(term, limit) {
 }
 
 export async function addContact(contactId, token) {
-  const { data } = await api.post(`/contacts/${contactId}`, {
+  const { data } = await api.post(`/contacts/${contactId}`, null, {
     params: { token },
   });
   return data;
@@ -67,7 +67,9 @@ export async function addMessage(contactId, body, token) {
   const { data } = await api.post(
     `/messages/${contactId}`,
     { body },
-    { params: { token } }
+    {
+      params: { token },
+    }
   );
   return data;
 }
