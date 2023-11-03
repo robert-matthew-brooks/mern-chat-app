@@ -1,4 +1,10 @@
 :root {
-  --full-screen-height: 100dvh;
+  --full-screen-height: 100vh;
   --nav-height: 3rem;
+}
+
+@supports (height: 100dvh) {
+  :root {
+    --full-screen-height: 100dvh;
+  }
 }

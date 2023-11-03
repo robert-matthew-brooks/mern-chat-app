@@ -17,6 +17,10 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
   const inputBox = document.getElementById('Chat__form__input');
   const messagesBox = document.getElementById('Chat__messages');
 
+  const isMobile = () => {
+    return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+  };
+
   const updateTip = (messages) => {
     if (!contacts.length) {
       setTip('↑ Add a user');
@@ -93,7 +97,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
       }
 
       setIsLoading(false);
-      if (inputBox) inputBox.focus();
+      if (inputBox && !isMobile()) inputBox.focus();
     })();
   }, [activeContact]);
 
