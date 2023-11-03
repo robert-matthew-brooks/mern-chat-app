@@ -4,8 +4,8 @@ import Login from './Login';
 import Main from './Main';
 
 export default function Routes() {
-  const { username } = useContext(UserContext);
+  const { token } = useContext(UserContext);
 
-  if (!username) return <Login />;
+  if (!token) return <Login />;
   else return <Main />;
 }
