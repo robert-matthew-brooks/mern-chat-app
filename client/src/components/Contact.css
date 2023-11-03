@@ -1,9 +1,12 @@
 :root {
   --contact-padding: 1rem;
   --contact-active-border: 5px;
+
+  --delete-icon-height: 1.2rem;
 }
 
 .Contact {
+  position: relative;
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
@@ -57,4 +60,39 @@
 
 .Contact__username {
   font-size: 0.9rem;
+}
+
+.Contact__delete {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.3rem;
+}
+
+.Contact__delete > button {
+  display: flex;
+  visibility: hidden;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 0.2rem;
+  cursor: pointer;
+}
+.Contact:hover button {
+  visibility: visible;
+}
+.Contact__delete > button:hover {
+  background-color: #c0c0c0;
+}
+
+.Contact__delete > button > svg {
+  height: var(--delete-icon-height);
+}
+
+@media (max-width: 600px) {
+  .Contact__delete > button {
+    visibility: visible;
+  }
+  .Contact__delete {
+    top: calc(50% - (var(--delete-icon-height) / 2));
+    right: 1.5rem;
+  }
 }
