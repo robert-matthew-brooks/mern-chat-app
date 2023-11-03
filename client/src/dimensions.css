@@ -1,10 +1,4 @@
 :root {
-  --full-screen-height: 100vh;
+  --full-screen-height: 100dvh;
   --nav-height: 3rem;
-}
-
-@media (max-width: 600px) {
-  :root {
-    --full-screen-max-height: 100dvh;
-  }
 }
