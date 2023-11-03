@@ -21,8 +21,7 @@ async function register(req, res, next) {
     res
       .status(201)
       .cookie('token', registeredUser.token, {
-        secure: true,
-        sameSite: 'none',
+        domain: '.be-mern-chat-app.onrender.com',
       })
 
       .send({ registered_user: registeredUser });
