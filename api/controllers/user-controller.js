@@ -20,11 +20,7 @@ async function register(req, res, next) {
 
     res
       .status(201)
-      .cookie('token', registeredUser.token, {
-        sameSite: 'none',
-        secure: true,
-      })
-
+      .cookie('token', registeredUser.token)
       .send({ registered_user: registeredUser });
   } catch (err) {
     next(err);
@@ -50,7 +46,11 @@ async function login(req, res, next) {
 
     res
       .status(201)
-      .cookie('token', foundUser.token)
+      .cookie('token', foundUser.token, {
+        sameSite: 'none',
+        secure: true,
+        domain: '.be-mern-chat-app.onrender.com',
+      })
       .send({ found_user: foundUser });
   } catch (err) {
     next(err);
