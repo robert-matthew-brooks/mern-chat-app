@@ -17,9 +17,13 @@ function makeToken(user) {
 }
 
 function getUserDataFromCookie(req) {
-  const cookies = req.headers?.cookie;
-  tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
-  token = tokenCookieStr.split('=')[1];
+  let token = req.query?.token;
+
+  if (!token) {
+    const cookies = req.headers?.cookie;
+    tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
+    token = tokenCookieStr.split('=')[1];
+  }
 
   const userData = jwt.verify(token, jwtSecret, {});
   return userData;

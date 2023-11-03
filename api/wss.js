@@ -20,6 +20,7 @@ function run(server) {
   const wss = new ws.WebSocketServer({ server });
 
   wss.on('connection', async (connection, req) => {
+    req.query = { token: req.url.split('?token=')[1] };
     const { id, username } = await getUserDataFromCookie(req);
     connection.id = id;
     connection.username = username;

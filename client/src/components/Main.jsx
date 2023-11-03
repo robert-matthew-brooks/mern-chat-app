@@ -7,14 +7,14 @@ import { getWsUrl } from '../js/urls';
 import './Main.css';
 
 export default function Main() {
-  const { activeContact } = useContext(UserContext);
+  const { token, activeContact } = useContext(UserContext);
   const [ws, setWs] = useState(null);
   const [wsMsgBuffer, setWsMsgBuffer] = useState(null);
   const [wsMessages, setWsMessages] = useState([]);
   const [onlineUserIds, setOnlineUserIds] = useState(['none']);
 
   useEffect(() => {
-    const ws = new WebSocket(getWsUrl());
+    const ws = new WebSocket(`${getWsUrl()}?token=${token}`);
     setWs(ws);
 
     ws.addEventListener('message', (message) => {

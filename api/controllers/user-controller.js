@@ -46,11 +46,7 @@ async function login(req, res, next) {
 
     res
       .status(201)
-      .cookie('token', foundUser.token, {
-        sameSite: 'none',
-        secure: true,
-        domain: '.be-mern-chat-app.onrender.com',
-      })
+      .cookie('token', foundUser.token)
       .send({ found_user: foundUser });
   } catch (err) {
     next(err);

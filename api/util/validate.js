@@ -9,13 +9,18 @@ async function rejectIfBlank(values) {
 }
 
 async function rejectIfNoTokenCookie(req) {
-  const cookies = req.headers?.cookie;
-  if (!cookies) {
-    return Promise.reject({ status: 403, msg: 'no cookie provided' });
+  let token = req.query?.token;
+
+  if (!token) {
+    const cookies = req.headers?.cookie;
+
+    if (!cookies && !token) {
+      return Promise.reject({ status: 403, msg: 'no cookie provided' });
+    }
+    tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
+    token = tokenCookieStr.split('=')[1];
   }
 
-  tokenCookieStr = cookies.split(';').find((str) => str.startsWith('token='));
-  token = tokenCookieStr.split('=')[1];
   if (!token) {
     return Promise.reject({ status: 403, msg: 'no token provided in cookies' });
   }

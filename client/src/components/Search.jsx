@@ -6,8 +6,14 @@ import { findUsers, addContact } from '../js/api';
 import './Search.css';
 
 export default function Search() {
-  const { username, contacts, setContacts, activeContact, setActiveContact } =
-    useContext(UserContext);
+  const {
+    token,
+    username,
+    contacts,
+    setContacts,
+    activeContact,
+    setActiveContact,
+  } = useContext(UserContext);
   const [searchStr, setSearchStr] = useState('');
   const [foundUsers, setFoundUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,7 +42,7 @@ export default function Search() {
       }).length > 0;
 
     if (!isAlreadyContact) {
-      await addContact(userToAdd.id);
+      await addContact(userToAdd.id, token);
       setContacts([...contacts, userToAdd]);
     }
 

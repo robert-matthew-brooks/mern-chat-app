@@ -6,7 +6,7 @@ import { getMessages, addMessage } from '../js/api';
 import './Chat.css';
 
 export default function Chat({ ws, wsMessages, setWsMessages }) {
-  const { id, activeContact, setActiveContact, contacts } =
+  const { id, token, activeContact, setActiveContact, contacts } =
     useContext(UserContext);
   const [message, setMessage] = useState('');
   const [tip, setTip] = useState(null);
@@ -64,7 +64,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
       // update backend server
       try {
-        await addMessage(activeContact.id, message);
+        await addMessage(activeContact.id, message, token);
       } catch (err) {
         console.error(err);
       }
@@ -80,7 +80,7 @@ export default function Chat({ ws, wsMessages, setWsMessages }) {
 
       try {
         if (activeContact) {
-          const { messages } = await getMessages(activeContact?.id);
+          const { messages } = await getMessages(activeContact?.id, token);
           setMessages(messages);
           updateTip(messages);
         } else {

@@ -85,6 +85,7 @@ export default function Login() {
     if (validateUsername() && validatePassword()) {
       try {
         const foundUser = await login(username, password);
+        console.log(foundUser);
         setUser(foundUser);
       } catch (err) {
         if (err?.response?.status === 403) {

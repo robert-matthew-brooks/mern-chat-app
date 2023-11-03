@@ -30,8 +30,8 @@ export async function logout() {
   await api.post('/logout');
 }
 
-export async function deleteUser() {
-  await api.delete('/user');
+export async function deleteUser(token) {
+  await api.delete('/user', { params: { token } });
 }
 
 // used in search bar
@@ -42,22 +42,32 @@ export async function findUsers(term, limit) {
   return data;
 }
 
-export async function addContact(contactId) {
-  const { data } = await api.post(`/contacts/${contactId}`);
+export async function addContact(contactId, token) {
+  const { data } = await api.post(`/contacts/${contactId}`, {
+    params: { token },
+  });
   return data;
 }
 
-export async function removeContact(contactId) {
-  const { data } = await api.delete(`/contacts/${contactId}`);
+export async function removeContact(contactId, token) {
+  const { data } = await api.delete(`/contacts/${contactId}`, {
+    params: { token },
+  });
   return data;
 }
 
-export async function getMessages(contactId) {
-  const { data } = await api.get(`/messages/${contactId}`);
+export async function getMessages(contactId, token) {
+  const { data } = await api.get(`/messages/${contactId}`, {
+    params: { token },
+  });
   return data;
 }
 
-export async function addMessage(contactId, body) {
-  const { data } = await api.post(`/messages/${contactId}`, { body });
+export async function addMessage(contactId, body, token) {
+  const { data } = await api.post(
+    `/messages/${contactId}`,
+    { body },
+    { params: { token } }
+  );
   return data;
 }

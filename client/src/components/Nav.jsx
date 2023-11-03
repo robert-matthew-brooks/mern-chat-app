@@ -7,7 +7,7 @@ import megaphoneImg from '../assets/megaphone.svg';
 import './Nav.css';
 
 export default function Nav({ ws }) {
-  const { username, setUser, activeContact, setActiveContact } =
+  const { token, username, setUser, activeContact, setActiveContact } =
     useContext(UserContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
 
@@ -28,7 +28,7 @@ export default function Nav({ ws }) {
 
   const handleDeleteAccount = async () => {
     setIsDeleteLoading(true);
-    await deleteUser();
+    await deleteUser(token);
     ws.close();
     setIsDeleteLoading(false);
     setUser(null);
