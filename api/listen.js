@@ -1,7 +1,7 @@
 const app = require('./app');
 const wss = require('./wss');
 
-const port = 6789;
+const port = 9090;
 
 const server = app.listen(port, (err) => {
   if (err) {
