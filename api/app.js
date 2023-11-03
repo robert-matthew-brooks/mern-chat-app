@@ -21,6 +21,7 @@ const app = express();
 // middleware
 
 app.use(express.json());
+app.set('json spaces', 2);
 app.use(cookieParser());
 app.use(
   cors({

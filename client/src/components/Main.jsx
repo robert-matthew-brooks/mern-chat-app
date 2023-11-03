@@ -13,7 +13,12 @@ export default function Main() {
   const [onlineUserIds, setOnlineUserIds] = useState(['none']);
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:6789');
+    const wss =
+      process.env.NODE_ENV === 'production'
+        ? 'ws://be-mern-chat-app.onrender.com'
+        : 'ws://localhost:9090';
+
+    const ws = new WebSocket(wss);
     setWs(ws);
 
     ws.addEventListener('message', (message) => {
