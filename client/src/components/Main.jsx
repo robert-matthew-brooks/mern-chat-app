@@ -3,6 +3,7 @@ import { UserContext } from '../UserContext';
 import Nav from './Nav';
 import Contacts from './Contacts';
 import Chat from './Chat';
+import { getWsUrl } from '../js/urls';
 import './Main.css';
 
 export default function Main() {
@@ -13,12 +14,7 @@ export default function Main() {
   const [onlineUserIds, setOnlineUserIds] = useState(['none']);
 
   useEffect(() => {
-    const wss =
-      process.env.NODE_ENV === 'production'
-        ? 'wss://be-mern-chat-app.onrender.com'
-        : 'ws://localhost:9090';
-
-    const ws = new WebSocket(wss);
+    const ws = new WebSocket(getWsUrl());
     setWs(ws);
 
     ws.addEventListener('message', (message) => {

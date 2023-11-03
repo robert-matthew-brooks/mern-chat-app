@@ -1,12 +1,8 @@
 import axios from 'axios';
-
-const baseURL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://be-mern-chat-app.onrender.com'
-    : 'http://localhost:9090';
+import { getBeUrl } from './urls';
 
 const api = axios.create({
-  baseURL,
+  baseURL: getBeUrl(),
   withCredentials: true,
 });
 
