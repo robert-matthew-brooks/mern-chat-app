@@ -21,7 +21,8 @@
   width: 100%;
   display: flex;
   flex-direction: column;
-  background-color: var(--search-bg);
+  background-color: var(--search-result-bg);
+  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1), -3px 3px 3px rgba(0, 0, 0, 0.1);
 }
 
 .Search__results__user,
@@ -47,6 +48,6 @@
 
 @media (max-width: 600px) {
   #Search__input {
-    width: 8rem;
+    width: 7rem;
   }
 }

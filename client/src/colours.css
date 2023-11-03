@@ -19,16 +19,21 @@
   --form-demo-hover-border-colour: #505050;
   --form-demo-bg-colour: #eaeaea;
 
+  --login-guide-status-colour: #404040;
+  --login-guide-mobile-bg-colour: #f0f0f0;
+
   /* main app */
 
   --main-blue: #334b9c;
 
   --nav-bg-colour: var(--main-blue);
   --search-bg: #ffffff;
-  --search-result-hover-bg: #fafafa;
+  --search-result-bg: #fafafa;
+  --search-result-hover-bg: #d0d0d0;
   --menu-bg-colour: #e0e0e0;
   --menu-separator-colour: #c0c0c0;
   --menu-btn-hover-bg-colour: #d0d0d0;
+  --nav-text-colour: #808080;
 
   --contacts-bg-colour: #ffffff;
   --contact-hover-bg-colour: #f0f0f0;

@@ -95,7 +95,7 @@
 
 #Login__guide__status {
   font-style: italic;
-  color: #404040;
+  color: var(--login-guide-status-colour);
 }
 
 .Login__guide__status--offline {
@@ -134,7 +134,7 @@
   #Login__guide {
     width: 18rem;
     padding: 1rem;
-    background-color: #f0f0f0;
+    background-color: var(--login-guide-mobile-bg-colour);
     border: 1px dashed grey;
   }
 }

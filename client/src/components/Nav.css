@@ -60,12 +60,12 @@
   align-items: center;
 }
 
-#Nav__user-menu #Nav__user-menu > p {
+#Nav__user-menu > p {
   display: flex;
   justify-content: center;
   align-items: center;
   font-size: 0.9rem;
-  color: #808080;
+  color: var(--nav-text-colour);
 }
 
 #Nav__user-menu > button {
