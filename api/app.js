@@ -10,7 +10,7 @@ const { seedTestAccounts } = require('./db/seed');
 // init
 
 const clientUrls = [
-  'https://fe-mern-chat-app.netlify.app',
+  'https://fe-mern-chat-app.onrender.com',
   'http://localhost:5173',
 ];
 let reseedTimeout;
