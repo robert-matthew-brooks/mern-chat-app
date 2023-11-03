@@ -18,7 +18,7 @@ const UserSchema = new mongoose.Schema(
 );
 
 // cascade delete
-UserSchema.pre('deleteMany', async (next) => {
+UserSchema.pre('deleteMany', async (_next) => {
   const deletedUsers = await User.find({ isTest: true });
   const deletedIds = deletedUsers.map((user) => user._id);
 
