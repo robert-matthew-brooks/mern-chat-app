@@ -75,10 +75,12 @@ async function findUsers(req, res, next) {
 
 async function addContact(req, res, next) {
   const { contact_id: contactId } = req.params;
+  console.log('addContact request');
 
   try {
     await rejectIfNoTokenCookie(req);
     const { id } = await getUserDataFromCookie(req);
+    console.log('id, contactId:', id, contactId);
     const { response } = await userModel.addContact(id, contactId);
     res.status(200).send({ response });
   } catch (err) {
