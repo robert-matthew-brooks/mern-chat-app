@@ -11,8 +11,10 @@ export async function pingServer() {
   return response;
 }
 
-export async function getProfileFromCookie() {
-  const { data } = await api.get('/user');
+export async function getProfileFromToken(token) {
+  const { data } = await api.get('/user', {
+    params: { token },
+  });
   return data.user_data;
 }
 

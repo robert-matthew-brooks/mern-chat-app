@@ -7,8 +7,14 @@ import megaphoneImg from '../assets/megaphone.svg';
 import './Nav.css';
 
 export default function Nav({ ws }) {
-  const { token, username, setUser, activeContact, setActiveContact } =
-    useContext(UserContext);
+  const {
+    token,
+    username,
+    setUser,
+    activeContact,
+    setToken,
+    setActiveContact,
+  } = useContext(UserContext);
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [searchStr, setSearchStr] = useState('');
 
@@ -22,16 +28,20 @@ export default function Nav({ ws }) {
 
   const handleLogout = async () => {
     setIsLogoutLoading(true);
-    await logout();
+
+    logout();
     ws.close();
+
     setIsLogoutLoading(false);
     setUser(null);
   };
 
   const handleDeleteAccount = async () => {
     setIsDeleteLoading(true);
+
     await deleteUser(token);
     ws.close();
+
     setIsDeleteLoading(false);
     setUser(null);
   };
@@ -40,7 +50,12 @@ export default function Nav({ ws }) {
     <>
       <div id="Nav">
         <p id="Nav__title">
-          <img src={megaphoneImg} />
+          <img
+            src={megaphoneImg}
+            onClick={() => {
+              console.log(token);
+            }}
+          />
           Bob Chat
         </p>
         <Search

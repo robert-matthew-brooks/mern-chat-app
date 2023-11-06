@@ -16,8 +16,9 @@ function makeToken(user) {
   );
 }
 
-function getUserDataFromCookie(req) {
+function getUserDataFromToken(req) {
   let token = req.query?.token;
+  console.log(token);
 
   if (!token) {
     const cookies = req.headers?.cookie;
@@ -29,4 +30,4 @@ function getUserDataFromCookie(req) {
   return userData;
 }
 
-module.exports = { makeToken, getUserDataFromCookie };
+module.exports = { makeToken, getUserDataFromToken };

@@ -1,5 +1,5 @@
 const ws = require('ws');
-const { getUserDataFromCookie } = require('./util/token');
+const { getUserDataFromToken } = require('./util/token');
 
 const broadcastClients = (wss) => {
   const clients = [...wss.clients];
@@ -21,7 +21,7 @@ function run(server) {
 
   wss.on('connection', async (connection, req) => {
     req.query = { token: req.url.split('?token=')[1] };
-    const { id, username } = await getUserDataFromCookie(req);
+    const { id, username } = await getUserDataFromToken(req);
     connection.id = id;
     connection.username = username;
 
